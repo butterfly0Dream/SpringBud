@@ -1,2 +1,3 @@
+include ':testopengl'
 include ':app'
 rootProject.name = "SpringBud"
