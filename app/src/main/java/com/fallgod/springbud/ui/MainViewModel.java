@@ -21,6 +21,8 @@ public class MainViewModel extends ViewModel {
 
     private MutableLiveData<Long> mElapsedTime = new MutableLiveData<>();
 
+    public final MutableLiveData<String> textContent = new MutableLiveData<>();
+
     public MainViewModel(){
         mInitialTime = SystemClock.elapsedRealtime();
         Timer timer = new Timer();

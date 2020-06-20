@@ -1,7 +1,6 @@
 package com.fallgod.springbud.ui;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import com.fallgod.springbud.App;
 
@@ -23,8 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initViewModel();
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         initViewModel();
     }
 
