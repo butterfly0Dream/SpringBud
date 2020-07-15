@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.fallgod.springbud">
+    package="com.fallgod.springbud" >
 
     <application
         android:name=".App"
@@ -11,8 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="Instantiatable">
-        <activity android:name=".ui.MainActivity">
+        tools:ignore="Instantiatable" >
+        <activity
+            android:name=".ui.activity.Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".ui.activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

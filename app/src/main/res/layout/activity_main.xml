@@ -5,34 +5,50 @@
     <data>
         <variable
             name="vm"
-            type="com.fallgod.springbud.ui.MainViewModel" />
+            type="com.fallgod.springbud.ui.viewmodel.MainViewModel" />
         <variable
             name="event"
-            type="com.fallgod.springbud.ui.MainActivity.ClickProxy" />
+            type="com.fallgod.springbud.ui.activity.MainActivity.ClickProxy" />
+        <variable
+            name="listener"
+            type="com.fallgod.springbud.ui.activity.MainActivity.EventHandler" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        isOpenDrawer="@{vm.openDrawer}"
+        allowDrawerOpen="@{vm.allowOpenDrawer}"
+        bindDrawerListener="@{listener}">
 
-        <TextView
-            android:id="@+id/sample_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{vm.textContent}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.activity.MainActivity">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/sample_text"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:onClick="@{()->event.changeText()}"
-            android:text="@string/btn_test"/>
+            <TextView
+                android:id="@+id/sample_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vm.textContent}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/sample_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:onClick="@{()->event.changeText()}"
+                android:text="@string/btn_test"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="340dp"
+            android:layout_height="match_parent"/>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>
