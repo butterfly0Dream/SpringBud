@@ -21,5 +21,6 @@ public class MainViewModel extends ViewModel {
         openDrawer.setValue(false);
         nvHeader.setValue("Header View");
         textContent.setValue("Spring Bud");
+
     }
 }
