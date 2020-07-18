@@ -11,7 +11,7 @@
 
         <variable
             name="event"
-            type="com.fallgod.springbud.ui.activity.MainActivity.ClickProxy"/>
+            type="com.fallgod.springbud.ui.activity.MainActivity.ClickProxy" />
 
         <variable
             name="listener"
@@ -33,13 +33,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.activity.MainActivity">
+            tools:context=".ui.activity.MainActivity"
+            android:background="@color/colorPrimary"
+            android:fitsSystemWindows="true">
 
             <View
                 android:id="@+id/view_title_bar"
                 android:layout_width="0dp"
-                android:layout_height="76dp"
-                android:background="@color/colorPrimary"
+                android:layout_height="50dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -49,95 +50,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{vm.textContent}"
-                android:layout_marginTop="@dimen/statue_bar_height"
                 app:layout_constraintBottom_toBottomOf="@+id/view_title_bar"
                 app:layout_constraintEnd_toEndOf="@+id/view_title_bar"
                 app:layout_constraintStart_toStartOf="@+id/view_title_bar"
-                app:layout_constraintTop_toTopOf="@+id/view_title_bar"/>
+                app:layout_constraintTop_toTopOf="@+id/view_title_bar" />
 
             <ImageView
                 android:id="@+id/iv_main_open_drawer"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
                 android:onClick="@{()->event.openDrawer()}"
-                android:layout_marginTop="@dimen/statue_bar_height"
+                android:src="@drawable/dawer"
                 app:layout_constraintBottom_toBottomOf="@+id/view_title_bar"
                 app:layout_constraintStart_toStartOf="@+id/view_title_bar"
-                app:layout_constraintTop_toTopOf="@+id/view_title_bar"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/dawer"/>
-
-<!--            <Button-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:onClick="@{()->event.changeText()}"-->
-<!--                android:text="@string/btn_test"-->
-<!--                android:layout_marginTop="@dimen/statue_bar_height"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/view_title_bar"-->
-<!--                app:layout_constraintEnd_toEndOf="@+id/view_title_bar"-->
-<!--                app:layout_constraintTop_toTopOf="@+id/view_title_bar" />-->
-
-            <!--<CalendarView
-                android:id="@+id/cv_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/view_title_bar"
-                app:layout_constraintStart_toStartOf="parent"
-                setDateChangeListener="@{dataListener}"/>-->
+                app:layout_constraintTop_toTopOf="@+id/view_title_bar" />
 
             <fragment
                 android:id="@+id/fragment_calendar"
                 android:name="com.fallgod.springbud.ui.fragement.CalendarFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/view_title_bar"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_title_bar" />
 
             <fragment
                 android:id="@+id/fragment_weather"
                 android:name="com.fallgod.springbud.ui.fragement.WeatherFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_calendar"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-<!--            <com.haibin.calendarview.CalendarLayout-->
-<!--                android:id="@+id/cl_main"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="0dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/view_title_bar"-->
-<!--                android:background="#fff"-->
-<!--                app:month_view="com.fallgod.springbud.ui.calendar..FullMonthView"-->
-<!--                app:week_view="com.fallgod.springbud.ui.calendar.FullWeekView"-->
-<!--                app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"-->
-<!--                app:calendar_height="50dp"-->
-<!--                app:current_month_text_color="#333333"-->
-<!--                app:current_month_lunar_text_color="#CFCFCF"-->
-<!--                app:min_year="2004"-->
-<!--                app:other_month_text_color="#e1e1e1"-->
-<!--                app:scheme_text="假"-->
-<!--                app:scheme_text_color="#333"-->
-<!--                app:scheme_theme_color="#333"-->
-<!--                app:selected_text_color="#fff"-->
-<!--                app:selected_theme_color="#333"-->
-<!--                app:week_start_with="mon"-->
-<!--                app:week_background="#fff"-->
-<!--                app:month_view_show_mode="mode_only_current"-->
-<!--                app:week_text_color="#111">-->
-
-<!--                <com.haibin.calendarview.CalendarView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content" />-->
-<!--                <androidx.recyclerview.widget.RecyclerView-->
-<!--                    android:id="@+id/rv_main_calendar"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:background="@color/calender_rv_bg"/>-->
-<!--            </com.haibin.calendarview.CalendarLayout>-->
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_calendar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -146,7 +90,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             app:headerLayout="@layout/navi_view_header"
-            app:menu="@menu/navi_view_menu"/>
+            app:menu="@menu/navi_view_menu"
+            android:fitsSystemWindows="true" />
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

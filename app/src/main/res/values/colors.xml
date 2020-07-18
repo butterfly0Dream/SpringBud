@@ -6,4 +6,8 @@
 
     <!--日历下方recycleView的背景颜色-->
     <color name="calender_rv_bg">#D4D4D4</color>
+
+    <color name="line_color">#e7e7e7</color>
+    <color name="content_background">#f2f2f2</color>
+    <color name="solar_background">#009988</color>
 </resources>
