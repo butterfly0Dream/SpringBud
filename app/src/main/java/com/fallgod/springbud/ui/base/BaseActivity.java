@@ -2,6 +2,7 @@ package com.fallgod.springbud.ui.base;
 
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.View;
 
 import com.fallgod.springbud.App;
 import com.fallgod.springbud.BR;
@@ -44,6 +45,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         for (int i = 0; i < bindingParams.size(); i++){
             binding.setVariable(bindingParams.keyAt(i),bindingParams.valueAt(i));
         }
+
+        //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
     /**

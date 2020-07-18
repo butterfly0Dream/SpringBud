@@ -2,6 +2,7 @@ package com.fallgod.springbud.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CalendarView;
 
 import com.fallgod.springbud.BR;
 import com.fallgod.springbud.R;
@@ -10,6 +11,7 @@ import com.fallgod.springbud.ui.base.DataBindingConfig;
 import com.fallgod.springbud.ui.viewmodel.MainViewModel;
 import com.fallgod.springbud.util.LogUtil;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MainActivity extends BaseActivity {
@@ -34,13 +36,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected DataBindingConfig getDataBindingConfig() {
         return new DataBindingConfig(R.layout.activity_main,mMainViewModel)
-                .addBindingParams(BR.event,new ClickProxy());
+                .addBindingParams(BR.event,new ClickProxy())
+                .addBindingParams(BR.listener,new EventHandler())
+                .addBindingParams(BR.dataListener,new EventDataChange());
     }
 
 
     public class ClickProxy{
         public void changeText(){
             mMainViewModel.textContent.setValue("hhhh");
+        }
+
+        public void openDrawer(){
+            mMainViewModel.openDrawer.setValue(true);
         }
     }
 
@@ -55,6 +63,14 @@ public class MainActivity extends BaseActivity {
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             LogUtil.d(TAG,"onDrawerClosed");
+        }
+    }
+
+    public class EventDataChange implements CalendarView.OnDateChangeListener{
+
+        @Override
+        public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            LogUtil.d(TAG,year + "--"+month+"--"+dayOfMonth);
         }
     }
 }
