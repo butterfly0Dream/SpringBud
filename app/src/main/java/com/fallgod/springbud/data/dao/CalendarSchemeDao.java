@@ -8,6 +8,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 /**
  * Author: JackPan
@@ -30,6 +31,9 @@ public interface CalendarSchemeDao {
     @Insert
     void insertAll(List<CalendarScheme> list);
 
+    @Update
+    void update(CalendarScheme... calendarScheme);
+
     @Delete
-    void delete(CalendarScheme calendarScheme);
+    void delete(CalendarScheme... calendarScheme);
 }

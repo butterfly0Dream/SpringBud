@@ -1,5 +1,7 @@
 package com.fallgod.springbud.ui.viewmodel;
 
+import android.util.Log;
+
 import com.fallgod.springbud.Constants;
 import com.fallgod.springbud.data.bean.CalendarScheme;
 import com.fallgod.springbud.data.repository.CalendarRepository;
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModel;
  * Description:
  */
 public class CalendarViewModel extends ViewModel {
+    private static final String TAG = "CalendarViewModel";
 
     private CalendarRepository repository = new CalendarRepository();
 
@@ -75,17 +78,32 @@ public class CalendarViewModel extends ViewModel {
                 calendarScheme = getSchemeToday(0xFF40db25,"假");
                 break;
         }
+        Log.d(TAG, "calendarScheme: ");
         Map<String, Calendar> map = schemeData.getValue();
-        if (!map.containsKey(getSchemeCalendar(calendarScheme).toString())){
-
+        if (map.containsKey(getSchemeCalendar(calendarScheme).toString()) &&
+                map.get(getSchemeCalendar(calendarScheme).toString()).getScheme().equals(calendarScheme.text)){
+            //重复的数据，放弃保存
+            return;
+        }
+        if (!map.containsKey(getSchemeCalendar(calendarScheme).toString())){//插入新值
+            Log.d(TAG, "calendarScheme: update" + calendarScheme);
             //更新缓存数据
             map.put(getSchemeCalendar(calendarScheme).toString(),getSchemeCalendar(calendarScheme));
             schemeData.postValue(map);
 
             //存储到数据库
-            if (calendarScheme != null){
-                repository.saveData(calendarScheme);
+            repository.saveData(calendarScheme);
+        }
+        else {
+            if (map.get(getSchemeCalendar(calendarScheme).toString()).getScheme().equals("上") && calendarScheme.text.equals("下")
+                    || map.get(getSchemeCalendar(calendarScheme).toString()).getScheme().equals("下") && calendarScheme.text.equals("上")) {
+                //更新缓存数据
+                calendarScheme.text = "卡";
             }
+            map.put(getSchemeCalendar(calendarScheme).toString(),getSchemeCalendar(calendarScheme));
+            schemeData.postValue(map);
+            //更新到数据库
+            repository.update(calendarScheme);
         }
     }
 
@@ -123,9 +141,9 @@ public class CalendarViewModel extends ViewModel {
         calendar.setDay(data.day);
         calendar.setSchemeColor(data.color);//如果单独标记颜色、则会使用这个颜色
         calendar.setScheme(data.text);
-        calendar.addScheme(new Calendar.Scheme());
-        calendar.addScheme(0xFF008800, "假");
-        calendar.addScheme(0xFF008800, "节");
+//        calendar.addScheme(new Calendar.Scheme());
+//        calendar.addScheme(0xFF008800, "假");
+//        calendar.addScheme(0xFF008800, "节");
         return calendar;
     }
 

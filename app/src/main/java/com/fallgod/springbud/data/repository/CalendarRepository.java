@@ -38,6 +38,26 @@ public class CalendarRepository {
         }.start();
     }
 
+    public void update(CalendarScheme... calendarScheme){
+        LogUtil.d(TAG,"update data");
+        new Thread() {
+            @Override
+            public void run() {
+                AppDatabase.getInstance().calendarSchemeDao().update(calendarScheme);
+            }
+        }.start();
+    }
+
+    public void delete(CalendarScheme... calendarScheme){
+        LogUtil.d(TAG,"delete data");
+        new Thread() {
+            @Override
+            public void run() {
+                AppDatabase.getInstance().calendarSchemeDao().delete(calendarScheme);
+            }
+        }.start();
+    }
+
     public List<CalendarScheme> getSchemeDataList(){
         List<CalendarScheme> list = AppDatabase.getInstance().calendarSchemeDao().getAll();
         LogUtil.d(TAG,"list size:"+list.size());
