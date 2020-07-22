@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">SpringBud</string>
 
+    <!--测试button文本-->
     <string name="btn_test">测试</string>
     <string name="btn_main_open_drawer">Open Drawer</string>
-</resources>
+    
+    <!--考勤dialog按钮文本-->
+    <string name="attendance_to_work">上班</string>
+    <string name="attendance_off_work">下班</string>
+    <string name="attendance_holiday">休息</string>
+    <string name="attendance_leave">请假</string>
+    </resources>

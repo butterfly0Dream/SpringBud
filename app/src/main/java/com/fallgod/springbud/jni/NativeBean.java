@@ -1,4 +1,4 @@
-package com.fallgod.springbud.data;
+package com.fallgod.springbud.jni;
 
 /**
  * Author: JackPan

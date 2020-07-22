@@ -24,13 +24,6 @@ public class App extends Application  implements ViewModelStoreOwner {
     private ViewModelProvider.Factory mFactory;
 
     public static App getInstance(){
-        if (mInstance == null){
-            synchronized (App.class){
-                if (mInstance == null){
-                    mInstance = new App();
-                }
-            }
-        }
         return mInstance;
     }
 
@@ -38,6 +31,7 @@ public class App extends Application  implements ViewModelStoreOwner {
     public void onCreate() {
         super.onCreate();
 
+        mInstance = this;
         mAppViewModelStore = new ViewModelStore();
     }
 

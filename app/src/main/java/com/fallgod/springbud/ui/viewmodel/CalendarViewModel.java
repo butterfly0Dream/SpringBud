@@ -1,5 +1,15 @@
 package com.fallgod.springbud.ui.viewmodel;
 
+import com.fallgod.springbud.Constants;
+import com.fallgod.springbud.data.bean.CalendarScheme;
+import com.fallgod.springbud.data.repository.CalendarRepository;
+import com.haibin.calendarview.Calendar;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 /**
@@ -9,4 +19,114 @@ import androidx.lifecycle.ViewModel;
  * Description:
  */
 public class CalendarViewModel extends ViewModel {
+
+    private CalendarRepository repository = new CalendarRepository();
+
+    //当前日期
+    public final MutableLiveData<String> textMonthDay = new MutableLiveData<>();
+    //当前年份
+    public final MutableLiveData<Integer> textYear = new MutableLiveData<>();
+    //当前月份
+    public final MutableLiveData<String> textMonth = new MutableLiveData<>();
+    //当前day日期
+    public final MutableLiveData<String> textDay = new MutableLiveData<>();
+    //当前阴历日期
+    public final MutableLiveData<String> textLunar = new MutableLiveData<>();
+    //是否展示阴历日期和年份
+    public final MutableLiveData<Boolean> showLunar = new MutableLiveData<>();
+    //日历scheme数据
+    public final MutableLiveData<Map<String, Calendar>> schemeData = new MutableLiveData<>();
+
+    {
+        showLunar.setValue(true);
+    }
+
+    public void refreshSchemeData(){
+        new Thread() {
+            @Override
+            public void run() {
+                schemeData.postValue(repository.getSchemeData());
+            }
+        }.start();
+    }
+
+    public void saveData(){
+        List<CalendarScheme> list = new ArrayList<>();
+        list.add(getScheme(20200701,2020,7,1,0xFF40db25,"假"));
+        list.add(getScheme(20200703,2020,7,3,0xFFe69138,"事"));
+        list.add(getScheme(20200705,2020,7,5,0xFFdf1356,"休"));
+        repository.saveData(list);
+    }
+
+    // TODO: 2020/7/22 重复的打卡没有处理，一天的状态无法更新 
+    public void saveData(int action){
+        CalendarScheme calendarScheme = null;
+        switch (action){
+            case Constants.ATTENDANCE_ON_WORK:
+                calendarScheme = getSchemeToday(0xFF40bd25,"上");
+                break;
+            case Constants.ATTENDANCE_OFF_WORK:
+                calendarScheme = getSchemeToday(0xFF40bd25,"下");
+                break;
+            case Constants.ATTENDANCE_HOLIDAY:
+                calendarScheme = getSchemeToday(0xFFdf1356,"休");
+                break;
+            case Constants.ATTENDANCE_LEAVE:
+                calendarScheme = getSchemeToday(0xFF40db25,"假");
+                break;
+        }
+        Map<String, Calendar> map = schemeData.getValue();
+        if (!map.containsKey(getSchemeCalendar(calendarScheme).toString())){
+
+            //更新缓存数据
+            map.put(getSchemeCalendar(calendarScheme).toString(),getSchemeCalendar(calendarScheme));
+            schemeData.postValue(map);
+
+            //存储到数据库
+            if (calendarScheme != null){
+                repository.saveData(calendarScheme);
+            }
+        }
+    }
+
+    private CalendarScheme getSchemeToday(int color,String text){
+        String year = textYear.getValue().toString();
+        String month = textMonth.getValue();
+        if (month.length() == 1){
+            month = "0" + month;
+        }
+        String day = textDay.getValue();
+        if (day.length() == 1){
+            day = "0" + day;
+        }
+        int cId = Integer.valueOf(year + month + day);
+        int m = Integer.valueOf(textMonth.getValue());
+        int d = Integer.valueOf(textDay.getValue());
+        return getScheme(cId, textYear.getValue(), m, d, color, text);
+    }
+
+    private CalendarScheme getScheme(int cId, int year, int month, int day, int color, String text){
+        CalendarScheme calendarScheme = new CalendarScheme();
+        calendarScheme.cId = cId;
+        calendarScheme.year = year;
+        calendarScheme.month = month;
+        calendarScheme.day = day;
+        calendarScheme.color = color;
+        calendarScheme.text = text;
+        return calendarScheme;
+    }
+
+    private Calendar getSchemeCalendar(CalendarScheme data) {
+        Calendar calendar = new Calendar();
+        calendar.setYear(data.year);
+        calendar.setMonth(data.month);
+        calendar.setDay(data.day);
+        calendar.setSchemeColor(data.color);//如果单独标记颜色、则会使用这个颜色
+        calendar.setScheme(data.text);
+        calendar.addScheme(new Calendar.Scheme());
+        calendar.addScheme(0xFF008800, "假");
+        calendar.addScheme(0xFF008800, "节");
+        return calendar;
+    }
+
 }

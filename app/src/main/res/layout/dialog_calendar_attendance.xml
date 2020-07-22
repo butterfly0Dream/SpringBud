@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="click"
+            type="com.fallgod.springbud.ui.dialog.AttendanceDialogFragment.ClickProxy" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="10dp">
+
+        <Button
+            android:id="@+id/btn_to_work"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_off_work"
+            android:text="@string/attendance_to_work"
+            android:onClick="@{()->click.toWork()}"/>
+
+        <Button
+            android:id="@+id/btn_off_work"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_to_work"
+            app:layout_constraintBottom_toTopOf="@+id/btn_holiday"
+            android:text="@string/attendance_off_work"
+            android:onClick="@{()->click.offWork()}"/>
+
+        <Button
+            android:id="@+id/btn_holiday"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_off_work"
+            app:layout_constraintBottom_toTopOf="@+id/btn_leave"
+            android:text="@string/attendance_holiday"
+            android:onClick="@{()->click.holiday()}"/>
+
+        <Button
+            android:id="@+id/btn_leave"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_holiday"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/attendance_leave"
+            android:onClick="@{()->click.leave()}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

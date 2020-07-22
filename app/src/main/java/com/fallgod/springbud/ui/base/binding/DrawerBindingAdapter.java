@@ -1,4 +1,4 @@
-package com.fallgod.springbud.ui.base;
+package com.fallgod.springbud.ui.base.binding;
 
 import androidx.core.view.GravityCompat;
 import androidx.databinding.BindingAdapter;

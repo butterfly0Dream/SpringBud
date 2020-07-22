@@ -16,10 +16,6 @@
         <variable
             name="listener"
             type="com.fallgod.springbud.ui.activity.MainActivity.EventHandler" />
-
-        <variable
-            name="dataListener"
-            type="com.fallgod.springbud.ui.activity.MainActivity.EventDataChange" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -71,9 +67,10 @@
                 android:id="@+id/fragment_calendar"
                 android:name="com.fallgod.springbud.ui.fragement.CalendarFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_title_bar" />
+                app:layout_constraintTop_toBottomOf="@+id/view_title_bar"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <fragment
                 android:id="@+id/fragment_weather"

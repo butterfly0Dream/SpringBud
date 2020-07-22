@@ -14,7 +14,7 @@ import androidx.databinding.BindingAdapter;
  * Time: 11:45
  * Description:Calendar添加各种监听
  */
-public class CanlendarBingdingAdapter {
+public class CalendarBindingAdapter {
 
     @BindingAdapter(value = {"calendarSelectListener"}, requireAll = false)
     public static void listenCalendarSelect(CalendarView calendarView, CalendarView.OnCalendarSelectListener listener){
