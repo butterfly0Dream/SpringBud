@@ -46,6 +46,9 @@ public class MainActivity extends BaseActivity {
 
         public void openDrawer(){
             mMainViewModel.openDrawer.setValue(true);
+
+//            ActivityMainBinding binding = (ActivityMainBinding) getBinding();
+//            binding.tvTitle.setText("hhh");
         }
     }
 

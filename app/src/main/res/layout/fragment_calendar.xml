@@ -12,6 +12,9 @@
         <variable
             name="listener"
             type="com.fallgod.springbud.ui.fragement.CalendarFragment.EventHandler" />
+<!--        <variable-->
+<!--            name="View"-->
+<!--            type="android.view.View" />-->
     </data>
 
     <LinearLayout
