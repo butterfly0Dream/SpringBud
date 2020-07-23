@@ -2,7 +2,9 @@ package com.fallgod.springbud.ui.viewmodel;
 
 import android.util.Log;
 
+import com.fallgod.springbud.App;
 import com.fallgod.springbud.Constants;
+import com.fallgod.springbud.R;
 import com.fallgod.springbud.data.bean.CalendarScheme;
 import com.fallgod.springbud.data.repository.CalendarRepository;
 import com.haibin.calendarview.Calendar;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -61,21 +64,40 @@ public class CalendarViewModel extends ViewModel {
         repository.saveData(list);
     }
 
-    // TODO: 2020/7/22 重复的打卡没有处理，一天的状态无法更新 
+    /**
+     * 按照考勤事件类型更新并持久化数据
+     * @param action
+     */
     public void saveData(int action){
         CalendarScheme calendarScheme = null;
         switch (action){
             case Constants.ATTENDANCE_ON_WORK:
-                calendarScheme = getSchemeToday(0xFF40bd25,"上");
+                calendarScheme = getSchemeToday(
+                        ContextCompat.getColor(App.getInstance(), R.color.md_green_100),"上");
                 break;
             case Constants.ATTENDANCE_OFF_WORK:
-                calendarScheme = getSchemeToday(0xFF40bd25,"下");
+                calendarScheme = getSchemeToday(
+                        ContextCompat.getColor(App.getInstance(), R.color.md_green_300),"下");
+                break;
+            case Constants.ATTENDANCE_WORK:
+                calendarScheme = getSchemeToday(
+                        ContextCompat.getColor(App.getInstance(), R.color.md_green_900),"卡");
                 break;
             case Constants.ATTENDANCE_HOLIDAY:
-                calendarScheme = getSchemeToday(0xFFdf1356,"休");
+                calendarScheme = getSchemeToday(
+                        ContextCompat.getColor(App.getInstance(), R.color.md_blue_grey_500),"休");
                 break;
             case Constants.ATTENDANCE_LEAVE:
-                calendarScheme = getSchemeToday(0xFF40db25,"假");
+                calendarScheme = getSchemeToday(
+                        ContextCompat.getColor(App.getInstance(), R.color.md_deep_orange_500),"假");
+                break;
+            case Constants.ATTENDANCE_SOMETHING_LEAVE:
+                calendarScheme = getSchemeToday(
+                        ContextCompat.getColor(App.getInstance(), R.color.md_red_100),"事");
+                break;
+            case Constants.ATTENDANCE_SICK_LEAVE:
+                calendarScheme = getSchemeToday(
+                        ContextCompat.getColor(App.getInstance(), R.color.md_red_300),"病");
                 break;
         }
         Log.d(TAG, "calendarScheme: ");

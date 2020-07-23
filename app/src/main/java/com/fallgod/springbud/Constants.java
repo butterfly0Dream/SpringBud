@@ -13,7 +13,10 @@ public class Constants {
      */
     public static final int ATTENDANCE_ON_WORK = 1;    //上班
     public static final int ATTENDANCE_OFF_WORK = 2;    //下班
-    public static final int ATTENDANCE_HOLIDAY = 3;    //休息
-    public static final int ATTENDANCE_LEAVE = 4;    //请假
+    public static final int ATTENDANCE_WORK = 3;    //打卡（上下班均已打卡）
+    public static final int ATTENDANCE_HOLIDAY = 4;    //休息
+    public static final int ATTENDANCE_LEAVE = 5;    //休假（年假等带薪假）
+    public static final int ATTENDANCE_SOMETHING_LEAVE = 6;    //事假
+    public static final int ATTENDANCE_SICK_LEAVE = 7;    //病假
 
 }

@@ -23,6 +23,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/btn_off_work"
             android:text="@string/attendance_to_work"
+            android:background="@color/md_green_100"
             android:onClick="@{()->click.toWork()}"/>
 
         <Button
@@ -32,9 +33,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_to_work"
-            app:layout_constraintBottom_toTopOf="@+id/btn_holiday"
+            app:layout_constraintBottom_toTopOf="@+id/btn_work"
             android:text="@string/attendance_off_work"
+            android:background="@color/md_green_300"
             android:onClick="@{()->click.offWork()}"/>
+
+        <Button
+            android:id="@+id/btn_work"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_off_work"
+            app:layout_constraintBottom_toTopOf="@+id/btn_holiday"
+            android:text="@string/attendance_work"
+            android:background="@color/md_green_900"
+            android:onClick="@{()->click.Work()}"/>
 
         <Button
             android:id="@+id/btn_holiday"
@@ -42,9 +56,10 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_off_work"
+            app:layout_constraintTop_toBottomOf="@+id/btn_work"
             app:layout_constraintBottom_toTopOf="@+id/btn_leave"
             android:text="@string/attendance_holiday"
+            android:background="@color/md_grey_500"
             android:onClick="@{()->click.holiday()}"/>
 
         <Button
@@ -54,9 +69,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_holiday"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_something_leave"
             android:text="@string/attendance_leave"
+            android:background="@color/md_orange_500"
             android:onClick="@{()->click.leave()}"/>
+
+        <Button
+            android:id="@+id/btn_something_leave"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_leave"
+            app:layout_constraintBottom_toTopOf="@+id/btn_sick_leave"
+            android:text="@string/attendance_something_leave"
+            android:background="@color/md_red_100"
+            android:onClick="@{()->click.somethingLeave()}"/>
+
+        <Button
+            android:id="@+id/btn_sick_leave"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_something_leave"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/attendance_sick_leave"
+            android:background="@color/md_red_300"
+            android:onClick="@{()->click.sickLeave()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

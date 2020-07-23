@@ -8,6 +8,9 @@
     <!--考勤dialog按钮文本-->
     <string name="attendance_to_work">上班</string>
     <string name="attendance_off_work">下班</string>
+    <string name="attendance_work">全打卡</string>
     <string name="attendance_holiday">休息</string>
-    <string name="attendance_leave">请假</string>
+    <string name="attendance_leave">带薪假</string>
+    <string name="attendance_something_leave">事假</string>
+    <string name="attendance_sick_leave">病假</string>
     </resources>

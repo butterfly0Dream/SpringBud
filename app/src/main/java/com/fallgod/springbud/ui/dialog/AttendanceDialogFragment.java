@@ -61,6 +61,12 @@ public class AttendanceDialogFragment extends BaseDialogFragment {
             dismiss();
         }
 
+        public void Work() {
+            LogUtil.d(TAG, "work");
+            mCalendarViewModel.saveData(Constants.ATTENDANCE_WORK);
+            dismiss();
+        }
+
         public void holiday() {
             LogUtil.d(TAG, "holiday");
             mCalendarViewModel.saveData(Constants.ATTENDANCE_HOLIDAY);
@@ -70,6 +76,18 @@ public class AttendanceDialogFragment extends BaseDialogFragment {
         public void leave() {
             LogUtil.d(TAG, "leave");
             mCalendarViewModel.saveData(Constants.ATTENDANCE_LEAVE);
+            dismiss();
+        }
+
+        public void somethingLeave() {
+            LogUtil.d(TAG, "something leave");
+            mCalendarViewModel.saveData(Constants.ATTENDANCE_SOMETHING_LEAVE);
+            dismiss();
+        }
+
+        public void sickLeave() {
+            LogUtil.d(TAG, "something leave");
+            mCalendarViewModel.saveData(Constants.ATTENDANCE_SICK_LEAVE);
             dismiss();
         }
     }
