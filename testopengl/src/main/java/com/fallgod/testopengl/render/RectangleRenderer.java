@@ -7,12 +7,17 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import com.fallgod.testopengl.R;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -63,11 +68,12 @@ public class RectangleRenderer implements GLSurfaceView.Renderer {
     private static final short[] VERTEX_INDEX = { 0, 1, 2, 0, 2, 3 };
 
     //指定截取纹理的哪部分绘制
+    //纹理坐标是按顺序取的，通过修改坐标顺序，可以实现镜像翻转、90°旋转（任意角度需要结合投影矩阵）
     private static final float[] TEX_VERTEX = {   // in clockwise order:
-            1, 0,  // bottom right
+            1.2f, 0,  // bottom right
             0, 0,  // bottom left
             0, 1,  // top left
-            1, 1,  // top right
+            1.2f, 1,  // top right
     };
 
     private final FloatBuffer mVertexBuffer;
@@ -161,6 +167,8 @@ public class RectangleRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl10, int i, int i1) {
+        width = i;
+        height = i1;
         GLES20.glViewport(0, 0, i, i1);
 
         Matrix.perspectiveM(mMvpMatrix, 0, 45, (float) i / i1, 0.1f, 100f);//得到透视投影矩阵
@@ -176,7 +184,85 @@ public class RectangleRenderer implements GLSurfaceView.Renderer {
         GLES20.glUniform1i(mTexSamplerHandle,0);
 
         //用glDrawElements 来绘制，mVertexIndexBuffer 指定了顶点绘制顺序
+        //glDrawElements 是给定顶点列表和绘制顺序（顶点索引列表）进行绘制，而 glDrawArrays 则只给定顶点列表。
+        //对于非常复杂的模型，需要很多三角形构成，顶点大量重复，而顶点坐标占用的空间比索引占用的空间大得多，因此 glDrawElements 空间效率会更高。
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, VERTEX_INDEX.length, GLES20.GL_UNSIGNED_SHORT,mVertexIndexBuffer);
+    }
+
+    int width;
+    int height;
+    public void createBitmap(String filename){
+        ByteBuffer rgbaBuf = ByteBuffer.allocateDirect(width * height * 4);
+        rgbaBuf.position(0);
+        Log.d("jack", "Creating " + "  "+rgbaBuf.remaining());
+        //此函数非常耗时，3.0以上版本建议使用PBO
+        //因为坐标系差异（y轴正负方向相反），最终图像沿x轴镜像翻转
+        GLES20.glReadPixels(0, 0, width, height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE,
+                rgbaBuf);
+
+        Log.d("jack", "Creating " + filename + "  "+rgbaBuf.remaining());
+        BufferedOutputStream bos = null;
+        try {
+            bos = new BufferedOutputStream(new FileOutputStream(filename));
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            bmp.copyPixelsFromBuffer(rgbaBuf);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, bos);
+            bmp.recycle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void createAndroidBitmap(String filename){
+        int x = 0;
+        int y = 0;
+        int w = width;
+        int h = height;
+        int b[]=new int[w*(y+h)];
+        int bt[]=new int[w*h];
+        IntBuffer ib = IntBuffer.wrap(b);
+        ib.position(0);
+        GLES20.glReadPixels(x, y, w, h, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ib);
+
+        for(int i=0, k=0; i<h; i++, k++)
+        {//remember, that OpenGL bitmap is incompatible with Android bitmap
+            //and so, some correction need.
+            for(int j=0; j<w; j++)
+            {
+                int pix=b[i*w+j];
+                int pb=(pix>>16)&0xff;
+                int pr=(pix<<16)&0x00ff0000;
+                int pix1=(pix&0xff00ff00) | pr | pb;
+                bt[(h-k-1)*w+j]=pix1;
+            }
+        }
+
+        BufferedOutputStream bos = null;
+        try {
+            bos = new BufferedOutputStream(new FileOutputStream(filename));
+            Bitmap bmp = Bitmap.createBitmap(bt,width, height, Bitmap.Config.ARGB_8888);
+//            bmp.copyPixelsFromBuffer(rgbaBuf);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, bos);
+            bmp.recycle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private int loadShader(int type, String shaderCode) {
