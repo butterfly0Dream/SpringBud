@@ -226,8 +226,8 @@ public class RectangleRenderer implements GLSurfaceView.Renderer {
         int y = 0;
         int w = width;
         int h = height;
-        int b[]=new int[w*(y+h)];
-        int bt[]=new int[w*h];
+        int[] b =new int[w*(y+h)];
+        int[] bt =new int[w*h];
         IntBuffer ib = IntBuffer.wrap(b);
         ib.position(0);
         GLES20.glReadPixels(x, y, w, h, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ib);
