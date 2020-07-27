@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.fallgod.springbud.BR;
 import com.fallgod.springbud.R;
+import com.fallgod.springbud.databinding.FragmentCalendarBinding;
 import com.fallgod.springbud.ui.base.BaseFragment;
 import com.fallgod.springbud.ui.base.DataBindingConfig;
 import com.fallgod.springbud.ui.dialog.AttendanceDialogFragment;
@@ -28,7 +29,7 @@ public class CalendarFragment extends BaseFragment {
     private CalendarViewModel mCalendarViewModel;
     private AttendanceDialogFragment mAttendanceDialog;
 
-    CalendarView mCalendarView;
+//    CalendarView mCalendarView;
 
     @Override
     protected void initViewModel() {
@@ -52,7 +53,8 @@ public class CalendarFragment extends BaseFragment {
 
     @SuppressLint("SetTextI18n")
     protected void initView() {
-        mCalendarView = getView().findViewById(R.id.calendarView);
+//        mCalendarView = getView().findViewById(R.id.calendarView);
+        CalendarView mCalendarView = ((FragmentCalendarBinding)getBinding()).calendarView;
         mCalendarViewModel.textYear.setValue(mCalendarView.getCurYear());
         mCalendarViewModel.textMonthDay.setValue(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
         mCalendarViewModel.textLunar.setValue("今日");

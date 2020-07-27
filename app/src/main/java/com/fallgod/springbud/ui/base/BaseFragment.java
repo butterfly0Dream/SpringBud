@@ -1,11 +1,13 @@
 package com.fallgod.springbud.ui.base;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.fallgod.springbud.App;
 import com.fallgod.springbud.BR;
@@ -32,6 +34,8 @@ public abstract class BaseFragment extends Fragment {
     private ShareViewModel mSharedViewModel;
     private ViewModelProvider mFragmentProvider;
     private ViewModelProvider mActivityProvider;
+    private ViewDataBinding mBinding;
+    private TextView mTvStrictModeTip;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,7 +45,29 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void initViewModel();
 
-    protected abstract DataBindingConfig getDataBindingConfig();
+    protected abstract DataBindingConfig getDataBindingConfig();   { }
+
+    /**
+     * TODO tip: 警惕使用。非必要情况下，尽可能不在子类中拿到 binding 实例乃至获取 view 实例。使用即埋下隐患。
+     * 目前的方案是在 debug 模式下，对获取实例的情况给予提示。
+     * <p>
+     * 如果这样说还不理解的话，详见 https://xiaozhuanlan.com/topic/9816742350 和 https://xiaozhuanlan.com/topic/2356748910
+     *
+     * @return
+     */
+    protected ViewDataBinding getBinding() {
+//        if (isDebug() && mBinding != null) {
+//            if (mTvStrictModeTip == null) {
+//                mTvStrictModeTip = new TextView(getContext());
+//                mTvStrictModeTip.setAlpha(0.5f);
+//                mTvStrictModeTip.setTextSize(16);
+//                mTvStrictModeTip.setBackgroundColor(Color.WHITE);
+//                mTvStrictModeTip.setText(R.string.debug_fragment_databinding_warning);
+//                ((ViewGroup) mBinding.getRoot()).addView(mTvStrictModeTip);
+//            }
+//        }
+        return mBinding;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +94,13 @@ public abstract class BaseFragment extends Fragment {
         for (int i = 0, length = bindingParams.size(); i < length; i++) {
             binding.setVariable(bindingParams.keyAt(i), bindingParams.valueAt(i));
         }
+        mBinding = binding;
         return binding.getRoot();
+    }
+
+    public boolean isDebug() {
+        return mActivity.getApplicationContext().getApplicationInfo() != null &&
+                (mActivity.getApplicationContext().getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 
     protected <T extends ViewModel> T getFragmentViewModel(@NonNull Class<T> modelClass) {
