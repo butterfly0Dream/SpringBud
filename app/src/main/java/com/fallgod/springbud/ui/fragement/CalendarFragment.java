@@ -54,6 +54,7 @@ public class CalendarFragment extends BaseFragment {
     @SuppressLint("SetTextI18n")
     protected void initView() {
 //        mCalendarView = getView().findViewById(R.id.calendarView);
+
         CalendarView mCalendarView = ((FragmentCalendarBinding)getBinding()).calendarView;
         mCalendarViewModel.textYear.setValue(mCalendarView.getCurYear());
         mCalendarViewModel.textMonthDay.setValue(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
