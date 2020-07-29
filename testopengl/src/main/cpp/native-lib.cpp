@@ -2,6 +2,8 @@
 #include <string>
 #include <unistd.h>
 
+#include "media/player.h"
+
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -36,4 +38,30 @@ Java_com_fallgod_testopengl_FFmpegActivity_ffmpegInfo(JNIEnv *env, jobject  /* t
 
     return env->NewStringUTF(info);
 }
+
+JNIEXPORT jint JNICALL
+Java_com_fallgod_testopengl_FFmpegActivity_createPlayer(JNIEnv *env,
+                                                        jobject /* this */,
+                                                        jstring path,
+                                                        jobject surface) {
+    Player *player = new Player(env, path, surface);
+    return (jint)player;
+}
+
+JNIEXPORT void JNICALL
+Java_com_fallgod_testopengl_FFmpegActivity_play(JNIEnv *env,
+                                                        jobject /* this */,
+                                                        jint player) {
+    Player *p = (Player *)player;
+    p->play();
+}
+
+JNIEXPORT void JNICALL
+Java_com_fallgod_testopengl_FFmpegActivity_pause(JNIEnv *env,
+                                                jobject /* this */,
+                                                jint player) {
+    Player *p = (Player *)player;
+    p->pause();
+}
+
 }

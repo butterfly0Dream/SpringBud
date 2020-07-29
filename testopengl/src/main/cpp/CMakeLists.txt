@@ -90,7 +90,26 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         # 列出参与编译的所有源文件
-        native-lib.cpp )
+        native-lib.cpp
+
+        #工具
+        ${CMAKE_SOURCE_DIR}/utils/logger.h
+        ${CMAKE_SOURCE_DIR}/utils/timer.c
+
+        # 播放器
+        ${CMAKE_SOURCE_DIR}/media//player.cpp
+
+        # 解码器
+        ${CMAKE_SOURCE_DIR}/media//one_frame.h
+        ${CMAKE_SOURCE_DIR}/media/decoder/i_decoder.h
+        ${CMAKE_SOURCE_DIR}/media/decoder/decode_state.h
+        ${CMAKE_SOURCE_DIR}/media/decoder/base_decoder.cpp
+        media/decoder/video/v_decoder.cpp
+
+        # 渲染器
+        ${CMAKE_SOURCE_DIR}/media/render/video/video_render.h
+        ${CMAKE_SOURCE_DIR}/media/render/video/native_render/native_render.cpp
+        )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -115,6 +134,9 @@ target_link_libraries(
 
         # 指定目标库，native-lib 是在上面 add_library 中配置的目标库
         native-lib
+
+        # 连接libandroid的库
+        -landroid
 
         # 4. 连接 FFmpeg 相关的库
         avutil
