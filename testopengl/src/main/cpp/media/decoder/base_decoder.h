@@ -162,7 +162,7 @@ public:
             case DECODING: return (char *)"DECODING";
             case PAUSE: return (char *)"PAUSE";
             case FINISH: return (char *)"FINISH";
-            default: return (char *)"UNKNOW";
+            default: return (char *)"UNKNOWN";
         }
     }
 

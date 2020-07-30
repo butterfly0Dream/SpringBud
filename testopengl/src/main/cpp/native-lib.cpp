@@ -1,8 +1,10 @@
 #include <jni.h>
 #include <string>
 #include <unistd.h>
+#include <android/log.h>
 
 #include "media/player.h"
+#include "utils/logger.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -45,23 +47,32 @@ Java_com_fallgod_testopengl_FFmpegActivity_createPlayer(JNIEnv *env,
                                                         jstring path,
                                                         jobject surface) {
     Player *player = new Player(env, path, surface);
-    return (jint)player;
+    return (jint) player;
 }
 
 JNIEXPORT void JNICALL
 Java_com_fallgod_testopengl_FFmpegActivity_play(JNIEnv *env,
-                                                        jobject /* this */,
-                                                        jint player) {
-    Player *p = (Player *)player;
+                                                jobject /* this */,
+                                                jint player) {
+    Player *p = (Player *) player;
     p->play();
 }
 
 JNIEXPORT void JNICALL
 Java_com_fallgod_testopengl_FFmpegActivity_pause(JNIEnv *env,
-                                                jobject /* this */,
-                                                jint player) {
-    Player *p = (Player *)player;
+                                                 jobject /* this */,
+                                                 jint player) {
+    Player *p = (Player *) player;
     p->pause();
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_fallgod_testopengl_FFmpegActivity_getState(JNIEnv *env,
+                                                    jobject /* this */,
+                                                    jint player) {
+    Player *p = (Player *) player;
+    //将char * 转换成jstring
+    return env->NewStringUTF(p->getState());
 }
 
 }

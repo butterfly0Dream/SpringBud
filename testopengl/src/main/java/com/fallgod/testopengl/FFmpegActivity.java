@@ -5,7 +5,10 @@ import android.os.Environment;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
+
+import com.fallgod.testopengl.util.LogUtil;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +30,11 @@ public class FFmpegActivity extends AppCompatActivity {
         mSfv = findViewById(R.id.sfv);
 
         mTv.setText(ffmpegInfo());
+        mTv.setOnClickListener((View view)->{
+            if (player != 0){
+                LogUtil.d(TAG,"getState(player):"+getState(player));
+            }
+        });
 
         initSfv();
     }
@@ -60,6 +68,7 @@ public class FFmpegActivity extends AppCompatActivity {
     public native int createPlayer(String path, Surface surface);
     public native void play(int player);
     public native void pause(int player);
+    public native String getState(int player);
 
     static {
         System.loadLibrary("native-lib");

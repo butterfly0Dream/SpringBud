@@ -19,6 +19,7 @@ public:
 
     void play();
     void pause();
+    char * getState();
 };
 
 #endif //SPRINGBUD_PLAYER_H
