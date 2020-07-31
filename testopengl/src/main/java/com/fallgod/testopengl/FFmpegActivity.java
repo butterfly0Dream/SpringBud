@@ -37,6 +37,9 @@ public class FFmpegActivity extends AppCompatActivity {
         });
 
         initSfv();
+
+        //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
     private void initSfv(){

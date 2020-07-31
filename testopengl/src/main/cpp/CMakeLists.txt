@@ -105,10 +105,13 @@ add_library( # Sets the name of the library.
         ${CMAKE_SOURCE_DIR}/media/decoder/decode_state.h
         ${CMAKE_SOURCE_DIR}/media/decoder/base_decoder.cpp
         media/decoder/video/v_decoder.cpp
+        media/decoder/audio/a_decoder.cpp
 
         # 渲染器
         ${CMAKE_SOURCE_DIR}/media/render/video/video_render.h
         ${CMAKE_SOURCE_DIR}/media/render/video/native_render/native_render.cpp
+        ${CMAKE_SOURCE_DIR}/media/render/audio/audio_render.h
+        ${CMAKE_SOURCE_DIR}/media/render/audio/opensl_render.cpp
         )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -146,6 +149,9 @@ target_link_libraries(
         swscale
         avformat
         avdevice
+
+        # 打开 openSLES 支持
+        OpenSLES
 
         # Links the target library to the log library
         # included in the NDK.

@@ -1,0 +1,18 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+<!--        &lt;!&ndash; Android 6.0 以上 状态栏字色和图标为浅黑色 &ndash;&gt;-->
+<!--        <item name="android:windowLightStatusBar">true</item>-->
+
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
+<!--&lt;!&ndash;        <item name="android:windowTranslucentNavigation">true</item>&ndash;&gt;-->
+<!--        &lt;!&ndash;Android 5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色&ndash;&gt;-->
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+    </style>
+
+</resources>
