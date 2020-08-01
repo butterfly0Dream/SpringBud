@@ -1,4 +1,4 @@
-package com.fallgod.testopengl;
+package com.fallgod.testopengl.ui;
 
 import android.Manifest;
 import android.app.Activity;
@@ -36,6 +36,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.fallgod.testopengl.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

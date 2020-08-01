@@ -25,6 +25,7 @@ public:
 
     void play();
     void pause();
+    void stop();
     char * getState();
 };
 

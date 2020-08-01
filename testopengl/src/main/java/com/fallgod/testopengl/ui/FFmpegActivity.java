@@ -1,4 +1,4 @@
-package com.fallgod.testopengl;
+package com.fallgod.testopengl.ui;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -8,6 +8,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.fallgod.testopengl.R;
 import com.fallgod.testopengl.util.LogUtil;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +43,31 @@ public class FFmpegActivity extends AppCompatActivity {
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (player != 0){
+            play(player);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (player != 0){
+            pause(player);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (player != 0){
+            stop(player);
+            player = 0;
+        }
+    }
+
     private void initSfv(){
         mSfv.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -71,6 +97,7 @@ public class FFmpegActivity extends AppCompatActivity {
     public native int createPlayer(String path, Surface surface);
     public native void play(int player);
     public native void pause(int player);
+    public native void stop(int player);
     public native String getState(int player);
 
     static {

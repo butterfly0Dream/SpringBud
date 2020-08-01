@@ -13,7 +13,7 @@ extern "C" {
 #include <libavcodec/jni.h>
 
 JNIEXPORT jstring JNICALL
-Java_com_fallgod_testopengl_FFmpegActivity_ffmpegInfo(JNIEnv *env, jobject  /* this */) {
+Java_com_fallgod_testopengl_ui_FFmpegActivity_ffmpegInfo(JNIEnv *env, jobject  /* this */) {
 
     char info[40000] = {0};
     AVCodec *c_temp = av_codec_next(NULL);
@@ -42,7 +42,7 @@ Java_com_fallgod_testopengl_FFmpegActivity_ffmpegInfo(JNIEnv *env, jobject  /* t
 }
 
 JNIEXPORT jint JNICALL
-Java_com_fallgod_testopengl_FFmpegActivity_createPlayer(JNIEnv *env,
+Java_com_fallgod_testopengl_ui_FFmpegActivity_createPlayer(JNIEnv *env,
                                                         jobject /* this */,
                                                         jstring path,
                                                         jobject surface) {
@@ -51,7 +51,7 @@ Java_com_fallgod_testopengl_FFmpegActivity_createPlayer(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_com_fallgod_testopengl_FFmpegActivity_play(JNIEnv *env,
+Java_com_fallgod_testopengl_ui_FFmpegActivity_play(JNIEnv *env,
                                                 jobject /* this */,
                                                 jint player) {
     Player *p = (Player *) player;
@@ -59,15 +59,23 @@ Java_com_fallgod_testopengl_FFmpegActivity_play(JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL
-Java_com_fallgod_testopengl_FFmpegActivity_pause(JNIEnv *env,
+Java_com_fallgod_testopengl_ui_FFmpegActivity_pause(JNIEnv *env,
                                                  jobject /* this */,
                                                  jint player) {
     Player *p = (Player *) player;
     p->pause();
 }
 
+JNIEXPORT void JNICALL
+Java_com_fallgod_testopengl_ui_FFmpegActivity_stop(JNIEnv *env,
+                                                    jobject /* this */,
+                                                    jint player) {
+    Player *p = (Player *) player;
+    p->stop();
+}
+
 JNIEXPORT jstring JNICALL
-Java_com_fallgod_testopengl_FFmpegActivity_getState(JNIEnv *env,
+Java_com_fallgod_testopengl_ui_FFmpegActivity_getState(JNIEnv *env,
                                                     jobject /* this */,
                                                     jint player) {
     Player *p = (Player *) player;

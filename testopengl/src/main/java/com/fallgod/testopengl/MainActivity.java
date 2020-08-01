@@ -1,12 +1,13 @@
 package com.fallgod.testopengl;
 
-import android.opengl.GLSurfaceView;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.PersistableBundle;
 import android.view.View;
 
-import com.fallgod.testopengl.render.RectangleRenderer;
+import com.fallgod.testopengl.ui.FFmpegActivity;
+import com.fallgod.testopengl.ui.MainActivity2;
+import com.fallgod.testopengl.ui.OpenGLActivity;
 import com.fallgod.testopengl.util.LogUtil;
 
 import androidx.annotation.NonNull;
@@ -16,31 +17,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private GLSurfaceView mGLSurfaceView;
-    private RectangleRenderer mRenderer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LogUtil.d(TAG,"onCreate ");
-
-        mGLSurfaceView = (GLSurfaceView) findViewById(R.id.surfaceview);
-        mGLSurfaceView.setEGLContextClientVersion(2);
-        mGLSurfaceView.setEGLConfigChooser(8,8,8,8,16,0);
-//        glSurfaceView.setRenderer(new TriangleRenderer());
-        mRenderer = new RectangleRenderer(this);
-        mGLSurfaceView.setRenderer(mRenderer);
-        mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-
-    }
-
-    public void saveBitmap(View view){
-        LogUtil.d(TAG,"save bitmap");
-        //调用OpenGL的操作，必须要放到OpenGL的线程
-//        mGLSurfaceView.queueEvent(()->mRenderer.createBitmap());
-        String filename = Environment.getExternalStorageDirectory().getAbsolutePath() + "/gl_map.png";
-        mGLSurfaceView.queueEvent(()->mRenderer.createAndroidBitmap(filename));
     }
 
     @Override
@@ -53,14 +34,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         LogUtil.d(TAG,"onResume");
-        mGLSurfaceView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         LogUtil.d(TAG,"onPause");
-        mGLSurfaceView.onPause();
     }
 
     @Override
@@ -85,5 +64,25 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         LogUtil.d(TAG,"onSaveInstanceState");
+    }
+
+    //点击事件
+    public void clickEvent(View view){
+        switch (view.getId()){
+            case R.id.btn_opengl_aty://打开opengl页面
+                startActivity(OpenGLActivity.class);
+                break;
+            case R.id.btn_camera2_aty://打开camera2界面
+                startActivity(MainActivity2.class);
+                break;
+            case R.id.btn_ffmpeg_aty://打开FFmpeg界面
+                startActivity(FFmpegActivity.class);
+                break;
+        }
+    }
+
+    private void startActivity(Class c ){
+        Intent intent = new Intent(this,c);
+        startActivity(intent);
     }
 }

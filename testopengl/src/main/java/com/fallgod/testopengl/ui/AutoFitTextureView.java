@@ -1,4 +1,4 @@
-package com.fallgod.testopengl;
+package com.fallgod.testopengl.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;

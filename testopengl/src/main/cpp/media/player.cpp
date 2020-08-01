@@ -40,6 +40,15 @@ void Player::pause() {
     }
 }
 
+void Player::stop() {
+    if (m_v_decoder != NULL) {
+        m_v_decoder->Stop();
+    }
+    if (m_a_decoder != NULL){
+        m_a_decoder->Stop();
+    }
+}
+
 char * Player::getState() {
     if (m_v_decoder != NULL){
         return m_v_decoder->GetStateStr();

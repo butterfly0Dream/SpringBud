@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TestOpenGL</string>
+
+    <!--页面跳转按钮文本-->
+    <string name="btn_open_opengl">OpenGL页面</string>>
+    <string name="btn_open_camera2">Camera2页面</string>>
+    <string name="btn_open_ffmpeg">FFmpeg页面</string>>
 </resources>
