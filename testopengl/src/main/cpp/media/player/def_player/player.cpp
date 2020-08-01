@@ -3,9 +3,9 @@
 //
 
 #include "player.h"
-#include "render/video/native_render/native_render.h"
-#include "../utils/logger.h"
-#include "render/audio/opensl_render.h"
+#include "../../render/video/native_render/native_render.h"
+#include "../../../utils/logger.h"
+#include "../../render/audio/opensl_render.h"
 
 Player::Player(JNIEnv *jniEnv, jstring path, jobject surface) {
     m_v_decoder = new VideoDecoder(jniEnv, path);

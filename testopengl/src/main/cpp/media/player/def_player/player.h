@@ -6,9 +6,9 @@
 #define SPRINGBUD_PLAYER_H
 
 
-#include "decoder/video/v_decoder.h"
-#include "decoder/audio/a_decoder.h"
-#include "render/audio/audio_render.h"
+#include "../../decoder/video/v_decoder.h"
+#include "../../decoder/audio/a_decoder.h"
+#include "../../render/audio/audio_render.h"
 
 class Player {
 private:

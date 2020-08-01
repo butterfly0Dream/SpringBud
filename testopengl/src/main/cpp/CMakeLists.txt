@@ -95,9 +95,12 @@ add_library( # Sets the name of the library.
         #工具
         ${CMAKE_SOURCE_DIR}/utils/logger.h
         ${CMAKE_SOURCE_DIR}/utils/timer.c
+        ${CMAKE_SOURCE_DIR}/utils/const.h
 
         # 播放器
-        ${CMAKE_SOURCE_DIR}/media//player.cpp
+#        ${CMAKE_SOURCE_DIR}/media/player.cpp
+        media/player/def_player/player.cpp
+        media/player/gl_player/gl_player.cpp
 
         # 解码器
         ${CMAKE_SOURCE_DIR}/media//one_frame.h
@@ -110,8 +113,21 @@ add_library( # Sets the name of the library.
         # 渲染器
         ${CMAKE_SOURCE_DIR}/media/render/video/video_render.h
         ${CMAKE_SOURCE_DIR}/media/render/video/native_render/native_render.cpp
+        media/render/video/opengl_render/opengl_render.cpp
         ${CMAKE_SOURCE_DIR}/media/render/audio/audio_render.h
         ${CMAKE_SOURCE_DIR}/media/render/audio/opensl_render.cpp
+
+        # OpenGL EGL核心
+        opengl/egl/egl_core.cpp
+        opengl/egl/egl_surface.cpp
+
+        # OpenGL绘制器
+        opengl/drawer/drawer.cpp
+        opengl/drawer/video_drawer.cpp
+
+        # OpenGL绘制代理器
+        opengl/drawer/proxy/drawer_proxy.cpp
+        opengl/drawer/proxy/def_drawer_proxy_impl.cpp
         )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -152,6 +168,10 @@ target_link_libraries(
 
         # 打开 openSLES 支持
         OpenSLES
+
+        # 打开 openGL 支持
+        -lEGL
+        GLESv2
 
         # Links the target library to the log library
         # included in the NDK.

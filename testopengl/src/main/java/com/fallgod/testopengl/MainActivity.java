@@ -1,6 +1,7 @@
 package com.fallgod.testopengl;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LogUtil.d(TAG,"onCreate ");
+
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
     }
 
     @Override
@@ -34,6 +38,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         LogUtil.d(TAG,"onResume");
+
+        //隐藏虚拟按键，并且全屏
+        View decorView = getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= 19) {
+            //for new api versions.
+//            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+//                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  //隐藏导航栏
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;   //主动显示导航栏、状态栏时，以半透明方式显示并且一段时间后自动消失
+            decorView.setSystemUiVisibility(uiOptions);
+        }else{ // lower api
+            decorView.setSystemUiVisibility(View.GONE);
+        }
     }
 
     @Override

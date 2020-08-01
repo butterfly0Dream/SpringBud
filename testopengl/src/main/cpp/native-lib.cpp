@@ -3,8 +3,9 @@
 #include <unistd.h>
 #include <android/log.h>
 
-#include "media/player.h"
+#include "media/player/def_player/player.h"
 #include "utils/logger.h"
+#include "media/player/gl_player/gl_player.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -46,7 +47,8 @@ Java_com_fallgod_testopengl_ui_FFmpegActivity_createPlayer(JNIEnv *env,
                                                         jobject /* this */,
                                                         jstring path,
                                                         jobject surface) {
-    Player *player = new Player(env, path, surface);
+    GLPlayer *player = new GLPlayer(env, path);
+    player->SetSurface(surface);
     return (jint) player;
 }
 
@@ -54,31 +56,31 @@ JNIEXPORT void JNICALL
 Java_com_fallgod_testopengl_ui_FFmpegActivity_play(JNIEnv *env,
                                                 jobject /* this */,
                                                 jint player) {
-    Player *p = (Player *) player;
-    p->play();
+    GLPlayer *p = (GLPlayer *) player;
+    p->PlayOrPause();
 }
 
 JNIEXPORT void JNICALL
 Java_com_fallgod_testopengl_ui_FFmpegActivity_pause(JNIEnv *env,
                                                  jobject /* this */,
                                                  jint player) {
-    Player *p = (Player *) player;
-    p->pause();
+    GLPlayer *p = (GLPlayer *) player;
+    p->PlayOrPause();
 }
 
 JNIEXPORT void JNICALL
 Java_com_fallgod_testopengl_ui_FFmpegActivity_stop(JNIEnv *env,
                                                     jobject /* this */,
                                                     jint player) {
-    Player *p = (Player *) player;
-    p->stop();
+    GLPlayer *p = (GLPlayer *) player;
+    p->Release();
 }
 
 JNIEXPORT jstring JNICALL
 Java_com_fallgod_testopengl_ui_FFmpegActivity_getState(JNIEnv *env,
                                                     jobject /* this */,
                                                     jint player) {
-    Player *p = (Player *) player;
+    GLPlayer *p = (GLPlayer *) player;
     //将char * 转换成jstring
     return env->NewStringUTF(p->getState());
 }
