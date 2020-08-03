@@ -12,6 +12,7 @@ import com.fallgod.testopengl.ui.OpenGLActivity;
 import com.fallgod.testopengl.util.LogUtil;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,15 +44,31 @@ public class MainActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= 19) {
             //for new api versions.
-//            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-//                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
             int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  //隐藏导航栏
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;   //主动显示导航栏、状态栏时，以半透明方式显示并且一段时间后自动消失
             decorView.setSystemUiVisibility(uiOptions);
         }else{ // lower api
             decorView.setSystemUiVisibility(View.GONE);
         }
+
+        ActionBar bar = this.getSupportActionBar();
+        if (bar == null){
+            LogUtil.d(TAG,"action bar is null");
+            return;
+        }
+        // 主标题
+        bar.setTitle("ActionBar Tittle");
+        // 副标题
+        bar.setSubtitle("Sub Tittle");
+        // 左侧按钮
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setHomeButtonEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        LogUtil.d(TAG,"onSupportNavigateUp");
+        return super.onSupportNavigateUp();
     }
 
     @Override

@@ -25,25 +25,43 @@ void VideoDrawer::ReleaseRender() {
 }
 
 const char *VideoDrawer::GetVertexShader() {
-    const GLbyte shader[] = "attribute vec4 aPosition;\n"
-                            "attribute vec2 aCoordinate;\n"
-                            "varying vec2 vCoordinate;\n"
-                            "void main(){\n"
-                            "  gl_Position = aPosition;\n"
-                            "  vCoordinate = aCoordinate;\n"
-                            "}";
-    return (char *) shader;
+    //用此方式定义再转换字符串，结果会有乱码
+//    const GLbyte shader[] = "attribute vec4 aPosition;\n"
+//                            "attribute vec2 aCoordinate;\n"
+//                            "varying vec2 vCoordinate;\n"
+//                            "void main() {\n"
+//                            "  gl_Position = aPosition;\n"
+//                            "  vCoordinate = aCoordinate;\n"
+//                            "}";
+//    return (char *) shader;
+
+    return "attribute vec4 aPosition;\n"
+           "attribute vec2 aCoordinate;\n"
+           "varying vec2 vCoordinate;\n"
+           "void main() {\n"
+           //                            "  gl_Position = uMatrix*aPosition;\n"
+           "  gl_Position = aPosition;\n"
+           "  vCoordinate = aCoordinate;\n"
+           "}";
 }
 
 const char *VideoDrawer::GetFragmentShader() {
-    const GLbyte shader[] = "precision mediump float;\n"
-                            "uniform sampler2D uTexture;\n"
-                            "varying vec2 vCoordinate;\n"
-                            "void main() {\n"
-                            "  vec4 color = texture2D(uTexture, vCoordinate);\n"
-                            "  gl_FragColor = color;\n"
-                            "}";
-    return (char *) shader;
+//    const GLbyte shader[] = "precision mediump float;\n"
+//                            "uniform sampler2D uTexture;\n"
+//                            "varying vec2 vCoordinate;\n"
+//                            "void main() {\n"
+//                            "  vec4 color = texture2D(uTexture, vCoordinate);\n"
+//                            "  gl_FragColor = color;\n"
+//                            "}";
+//    return (char *) shader;
+
+    return  "precision mediump float;\n"
+            "uniform sampler2D uTexture;\n"
+            "varying vec2 vCoordinate;\n"
+            "void main() {\n"
+            "  vec4 color = texture2D(uTexture, vCoordinate);\n"
+            "  gl_FragColor = color;\n"
+            "}";
 }
 
 void VideoDrawer::InitCstShaderHandler() {
