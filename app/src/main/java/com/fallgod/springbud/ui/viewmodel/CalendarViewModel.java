@@ -51,7 +51,7 @@ public class CalendarViewModel extends ViewModel {
         new Thread() {
             @Override
             public void run() {
-                schemeData.postValue(repository.getSchemeData());
+                schemeData.postValue(repository.getSchemeDataFromFile());
             }
         }.start();
     }

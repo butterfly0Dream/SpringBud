@@ -1,8 +1,16 @@
 package com.fallgod.springbud.data.repository;
 
+import android.text.TextUtils;
+
+import com.fallgod.springbud.App;
+import com.fallgod.springbud.Constants;
 import com.fallgod.springbud.data.AppDatabase;
 import com.fallgod.springbud.data.bean.CalendarScheme;
+import com.fallgod.springbud.util.FileUtil;
 import com.fallgod.springbud.util.LogUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.haibin.calendarview.Calendar;
 
 import java.util.HashMap;
@@ -66,11 +74,46 @@ public class CalendarRepository {
 
     public Map<String, Calendar> getSchemeData(){
         Map<String, Calendar> map = new HashMap<>();
-        List<CalendarScheme> list = AppDatabase.getInstance().calendarSchemeDao().getAll();
+        List<CalendarScheme> list = getSchemeDataList();
+        for (CalendarScheme scheme:list){
+            map.put(getSchemeCalendar(scheme).toString(),getSchemeCalendar(scheme));
+        }
+//        saveHistoryToJson();
+        return map;
+    }
+
+    public Map<String, Calendar> getSchemeDataFromFile(){
+        Map<String, Calendar> map = new HashMap<>();
+        Gson gson = new GsonBuilder().create();
+        //泛型对象解析
+        String listJson = getHistoryFromFile();
+        if (TextUtils.isEmpty(listJson)){
+            LogUtil.e(TAG,"没有获取到有效内容");
+            return null;
+        }
+        List<CalendarScheme> list = gson.fromJson(listJson, new TypeToken<List<CalendarScheme>>(){}.getType());
         for (CalendarScheme scheme:list){
             map.put(getSchemeCalendar(scheme).toString(),getSchemeCalendar(scheme));
         }
         return map;
+    }
+
+    //将历史考勤数据保存成json
+    private void saveHistoryToJson(){
+        new Thread() {
+            @Override
+            public void run() {
+                List<CalendarScheme> list = getSchemeDataList();
+                Gson gson = new GsonBuilder().create();
+                String json = gson.toJson(list);
+                FileUtil.stringToExternalFile(json, Constants.ATTENDANCE_JSON_NAME, App.getInstance());
+            }
+        }.start();
+    }
+
+    // 从json中读取历史考勤数据
+    private String getHistoryFromFile(){
+        return FileUtil.getStringFromExternalFile(Constants.ATTENDANCE_JSON_NAME, App.getInstance());
     }
 
 //    public Map<String, Calendar> getSchemeData(){

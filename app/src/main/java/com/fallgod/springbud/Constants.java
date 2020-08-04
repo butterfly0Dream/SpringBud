@@ -19,4 +19,9 @@ public class Constants {
     public static final int ATTENDANCE_SOMETHING_LEAVE = 6;    //事假
     public static final int ATTENDANCE_SICK_LEAVE = 7;    //病假
 
+    /**
+     * 历史考勤json数据文件名
+     */
+    public static final String ATTENDANCE_JSON_NAME = "history_attendance.json";
+
 }
