@@ -51,7 +51,7 @@ public class CalendarViewModel extends ViewModel {
         new Thread() {
             @Override
             public void run() {
-                schemeData.postValue(repository.getSchemeDataFromFile());
+                schemeData.postValue(repository.getSchemeData());
             }
         }.start();
     }
@@ -62,6 +62,21 @@ public class CalendarViewModel extends ViewModel {
         list.add(getScheme(20200703,2020,7,3,0xFFe69138,"事"));
         list.add(getScheme(20200705,2020,7,5,0xFFdf1356,"休"));
         repository.saveData(list);
+    }
+
+    //保存json
+    public void saveJson(){
+        repository.saveHistoryToJson();
+    }
+
+    //读取json
+    public void fromJson(){
+        new Thread() {
+            @Override
+            public void run() {
+                schemeData.postValue(repository.getSchemeDataFromFile());
+            }
+        }.start();
     }
 
     /**
@@ -139,9 +154,9 @@ public class CalendarViewModel extends ViewModel {
         if (day.length() == 1){
             day = "0" + day;
         }
-        int cId = Integer.valueOf(year + month + day);
-        int m = Integer.valueOf(textMonth.getValue());
-        int d = Integer.valueOf(textDay.getValue());
+        int cId = Integer.parseInt(year + month + day);
+        int m = Integer.parseInt(textMonth.getValue());
+        int d = Integer.parseInt(textDay.getValue());
         return getScheme(cId, textYear.getValue(), m, d, color, text);
     }
 

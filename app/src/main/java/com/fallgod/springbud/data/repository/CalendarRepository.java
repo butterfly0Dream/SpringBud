@@ -26,8 +26,8 @@ import java.util.Map;
 public class CalendarRepository {
     private static final String TAG = "CalendarRepository";
 
-    public void saveData(List<CalendarScheme> list){
-        LogUtil.d(TAG,"save data");
+    public void saveData(List<CalendarScheme> list) {
+        LogUtil.d(TAG, "save data");
         new Thread() {
             @Override
             public void run() {
@@ -36,8 +36,8 @@ public class CalendarRepository {
         }.start();
     }
 
-    public void saveData(CalendarScheme... calendarScheme){
-        LogUtil.d(TAG,"save data");
+    public void saveData(CalendarScheme... calendarScheme) {
+        LogUtil.d(TAG, "save data");
         new Thread() {
             @Override
             public void run() {
@@ -46,8 +46,8 @@ public class CalendarRepository {
         }.start();
     }
 
-    public void update(CalendarScheme... calendarScheme){
-        LogUtil.d(TAG,"update data");
+    public void update(CalendarScheme... calendarScheme) {
+        LogUtil.d(TAG, "update data");
         new Thread() {
             @Override
             public void run() {
@@ -56,8 +56,8 @@ public class CalendarRepository {
         }.start();
     }
 
-    public void delete(CalendarScheme... calendarScheme){
-        LogUtil.d(TAG,"delete data");
+    public void delete(CalendarScheme... calendarScheme) {
+        LogUtil.d(TAG, "delete data");
         new Thread() {
             @Override
             public void run() {
@@ -66,44 +66,62 @@ public class CalendarRepository {
         }.start();
     }
 
-    public List<CalendarScheme> getSchemeDataList(){
+    public List<CalendarScheme> getSchemeDataList() {
         List<CalendarScheme> list = AppDatabase.getInstance().calendarSchemeDao().getAll();
-        LogUtil.d(TAG,"list size:"+list.size());
+        LogUtil.d(TAG, "list size:" + list.size());
         return list;
     }
 
-    public Map<String, Calendar> getSchemeData(){
+    public Map<String, Calendar> getSchemeData() {
         Map<String, Calendar> map = new HashMap<>();
         List<CalendarScheme> list = getSchemeDataList();
-        for (CalendarScheme scheme:list){
-            map.put(getSchemeCalendar(scheme).toString(),getSchemeCalendar(scheme));
+        for (CalendarScheme scheme : list) {
+            map.put(getSchemeCalendar(scheme).toString(), getSchemeCalendar(scheme));
         }
-//        saveHistoryToJson();
         return map;
     }
 
-    public Map<String, Calendar> getSchemeDataFromFile(){
+    public Map<String, Calendar> getSchemeDataFromFile() {
         Map<String, Calendar> map = new HashMap<>();
         Gson gson = new GsonBuilder().create();
         //泛型对象解析
         String listJson = getHistoryFromFile();
-        if (TextUtils.isEmpty(listJson)){
-            LogUtil.e(TAG,"没有获取到有效内容");
+        if (TextUtils.isEmpty(listJson)) {
+            LogUtil.e(TAG, "没有获取到有效内容");
             return null;
         }
-        List<CalendarScheme> list = gson.fromJson(listJson, new TypeToken<List<CalendarScheme>>(){}.getType());
-        for (CalendarScheme scheme:list){
-            map.put(getSchemeCalendar(scheme).toString(),getSchemeCalendar(scheme));
+        List<CalendarScheme> list = gson.fromJson(listJson, new TypeToken<List<CalendarScheme>>() {}.getType());
+        saveData(list);
+        for (CalendarScheme scheme : list) {
+            map.put(getSchemeCalendar(scheme).toString(), getSchemeCalendar(scheme));
         }
         return map;
     }
 
     //将历史考勤数据保存成json
-    private void saveHistoryToJson(){
+    public void saveHistoryToJson() {
         new Thread() {
             @Override
             public void run() {
                 List<CalendarScheme> list = getSchemeDataList();
+
+//                List<CalendarScheme> list = new ArrayList<>();
+//                for (int i = 20200604; i < 20200804; ) {
+//                    CalendarScheme data = new CalendarScheme();
+//                    data.cId = i;
+//                    data.year = 2020;
+//                    data.month = Integer.parseInt(String.valueOf(i).substring(4, 6));
+//                    data.day = Integer.parseInt(String.valueOf(i).substring(6));
+//                    data.text = "卡";
+//                    data.color = -14983648;
+//                    list.add(data);
+//                    if (data.day == 31) {
+//                        i += 70;
+//                    } else {
+//                        i++;
+//                    }
+//                }
+
                 Gson gson = new GsonBuilder().create();
                 String json = gson.toJson(list);
                 FileUtil.stringToExternalFile(json, Constants.ATTENDANCE_JSON_NAME, App.getInstance());
@@ -112,7 +130,7 @@ public class CalendarRepository {
     }
 
     // 从json中读取历史考勤数据
-    private String getHistoryFromFile(){
+    private String getHistoryFromFile() {
         return FileUtil.getStringFromExternalFile(Constants.ATTENDANCE_JSON_NAME, App.getInstance());
     }
 

@@ -65,7 +65,7 @@ public class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LogUtil.d(TAG,"file to string::\n"+str);
+        LogUtil.d(TAG,"file from string::\n"+str);
         return str.toString();
     }
 
@@ -129,7 +129,7 @@ public class FileUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            LogUtil.d(TAG,"file to string::\n"+str);
+            LogUtil.d(TAG,"string from external file::\n"+str);
             return str.toString();
         }
         return "";

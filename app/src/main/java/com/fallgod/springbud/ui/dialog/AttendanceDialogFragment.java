@@ -90,6 +90,20 @@ public class AttendanceDialogFragment extends BaseDialogFragment {
             mCalendarViewModel.saveData(Constants.ATTENDANCE_SICK_LEAVE);
             dismiss();
         }
+
+        //读取json
+        public void fromJson() {
+            LogUtil.d(TAG, "fromJson");
+            mCalendarViewModel.fromJson();
+            dismiss();
+        }
+
+        //保存json
+        public void saveJson() {
+            LogUtil.d(TAG, "saveJson");
+            mCalendarViewModel.saveJson();
+            dismiss();
+        }
     }
 
 }

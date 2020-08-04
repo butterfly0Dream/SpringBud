@@ -93,10 +93,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_something_leave"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_from_file"
             android:text="@string/attendance_sick_leave"
             android:background="@color/md_red_300"
             android:onClick="@{()->click.sickLeave()}"/>
+
+        <Button
+            android:id="@+id/btn_from_file"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_save_file"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sick_leave"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="读取json"
+            android:onClick="@{()->click.fromJson()}"/>
+
+        <Button
+            android:id="@+id/btn_save_file"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/btn_from_file"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sick_leave"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="保存json"
+            android:onClick="@{()->click.saveJson()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
