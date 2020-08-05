@@ -6,6 +6,7 @@ import com.fallgod.springbud.App;
 import com.fallgod.springbud.Constants;
 import com.fallgod.springbud.data.AppDatabase;
 import com.fallgod.springbud.data.bean.CalendarScheme;
+import com.fallgod.springbud.network.HttpRequest;
 import com.fallgod.springbud.util.FileUtil;
 import com.fallgod.springbud.util.LogUtil;
 import com.google.gson.Gson;
@@ -13,9 +14,20 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.haibin.calendarview.Calendar;
 
+import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.lifecycle.MutableLiveData;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Author: JackPan
@@ -64,6 +76,36 @@ public class CalendarRepository {
                 AppDatabase.getInstance().calendarSchemeDao().delete(calendarScheme);
             }
         }.start();
+    }
+
+    public void getRemoteData(MutableLiveData<Map<String, Calendar>> liveData){
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.calenderRequest(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                LogUtil.e(TAG,"CalenderRequest onFailure!");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody body = response.body();
+                if (body == null){
+                    LogUtil.e(TAG,"CalenderRequest response is null!");
+                }else {
+                    String json = body.string();
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(json);
+                        String version = jsonObject.getString("version");
+                        String data = jsonObject.getString("data");
+                        // TODO: 2020/8/5 使用Gson解析ObjectList（data）
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     public List<CalendarScheme> getSchemeDataList() {

@@ -62,6 +62,7 @@ dependencies {
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //Room数据库
@@ -70,6 +71,9 @@ dependencies {
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.6'
+    
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

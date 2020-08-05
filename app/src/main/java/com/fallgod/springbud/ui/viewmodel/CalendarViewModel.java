@@ -28,6 +28,8 @@ public class CalendarViewModel extends ViewModel {
 
     private CalendarRepository repository = new CalendarRepository();
 
+    private MutableLiveData<String> historyData = new MutableLiveData<>();
+
     //当前日期
     public final MutableLiveData<String> textMonthDay = new MutableLiveData<>();
     //当前年份
@@ -54,6 +56,7 @@ public class CalendarViewModel extends ViewModel {
                 schemeData.postValue(repository.getSchemeData());
             }
         }.start();
+        repository.getRemoteData(schemeData);
     }
 
     public void saveData(){
@@ -136,6 +139,7 @@ public class CalendarViewModel extends ViewModel {
                     || map.get(getSchemeCalendar(calendarScheme).toString()).getScheme().equals("下") && calendarScheme.text.equals("上")) {
                 //更新缓存数据
                 calendarScheme.text = "卡";
+                calendarScheme.color = ContextCompat.getColor(App.getInstance(), R.color.md_green_900);
             }
             map.put(getSchemeCalendar(calendarScheme).toString(),getSchemeCalendar(calendarScheme));
             schemeData.postValue(map);
