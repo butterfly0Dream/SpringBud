@@ -6,8 +6,10 @@ import com.fallgod.springbud.App;
 import com.fallgod.springbud.Constants;
 import com.fallgod.springbud.data.AppDatabase;
 import com.fallgod.springbud.data.bean.CalendarScheme;
+import com.fallgod.springbud.data.sp.SharedPrefHelper;
 import com.fallgod.springbud.network.HttpRequest;
 import com.fallgod.springbud.util.FileUtil;
+import com.fallgod.springbud.util.JsonUtil;
 import com.fallgod.springbud.util.LogUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -78,7 +80,36 @@ public class CalendarRepository {
         }.start();
     }
 
-    public void getRemoteData(MutableLiveData<Map<String, Calendar>> liveData){
+    /**
+     * 更新数据
+     * 1.检查本地考勤文件sha和网络端sha，不一致则更新
+     * 2.一致则读取本地json文件更新
+     */
+    public void refreshData(MutableLiveData<Map<String, Calendar>> liveData){
+        getRemoteData(liveData);
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.calenderFileInfo(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                LogUtil.e(TAG,"calenderFileInfo onFailure!");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody body = response.body();
+                if (body == null){
+                    LogUtil.e(TAG,"calenderFileInfo response is null!");
+                }else {
+                    String sha = JsonUtil.getString(body.string(),"sha");
+                    LogUtil.d(TAG,"remote sha is: "+sha);
+                    SharedPrefHelper.getInstance(App.getInstance()).setAttendanceSha(sha);
+                }
+            }
+        });
+    }
+
+    private void getRemoteData(MutableLiveData<Map<String, Calendar>> liveData){
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.calenderRequest(new Callback() {
             @Override
@@ -94,15 +125,49 @@ public class CalendarRepository {
                     LogUtil.e(TAG,"CalenderRequest response is null!");
                 }else {
                     String json = body.string();
-
                     try {
                         JSONObject jsonObject = new JSONObject(json);
-                        String version = jsonObject.getString("version");
-                        String data = jsonObject.getString("data");
-                        // TODO: 2020/8/5 使用Gson解析ObjectList（data）
+                        int version = jsonObject.getInt("version");
+                        int s = SharedPrefHelper.getInstance(App.getInstance()).getAttendanceVersion();
+                        if (s > version){
+                            liveData.postValue(getSchemeData());//展示数据库的缓存文件
+                            List<CalendarScheme> list = getSchemeDataList();
+                            Gson gson = new GsonBuilder().create();
+                            String dataList = gson.toJson(list);
+                            String content = JsonUtil.addKey("version",s,dataList,"data");
+                            String sha = SharedPrefHelper.getInstance(App.getInstance()).getAttendanceSha();
+                            String message = "更新至版本" + s;
+                            pushData(message, content, sha);
+                        }else if (s == version){
+                            liveData.postValue(getSchemeData());//展示数据库的缓存文件
+                        }else {
+                            String data = jsonObject.getString("data");
+                            SharedPrefHelper.getInstance(App.getInstance()).setAttendanceVersion(version);
+                            liveData.postValue(getSchemeMapByJson(data,true));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+            }
+        });
+    }
+
+    private void pushData(String message, String content, String sha){
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.calenderUpdate(message, content, sha, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                LogUtil.e(TAG,"calenderUpdate onFailure!");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody body = response.body();
+                if (body == null){
+                    LogUtil.e(TAG,"calenderUpdate response is null!");
+                }else {
+                    LogUtil.d(TAG, "calenderUpdate onResponse: "+body.string());
                 }
             }
         });
@@ -114,7 +179,7 @@ public class CalendarRepository {
         return list;
     }
 
-    public Map<String, Calendar> getSchemeData() {
+    private Map<String, Calendar> getSchemeData() {
         Map<String, Calendar> map = new HashMap<>();
         List<CalendarScheme> list = getSchemeDataList();
         for (CalendarScheme scheme : list) {
@@ -124,20 +189,12 @@ public class CalendarRepository {
     }
 
     public Map<String, Calendar> getSchemeDataFromFile() {
-        Map<String, Calendar> map = new HashMap<>();
-        Gson gson = new GsonBuilder().create();
-        //泛型对象解析
         String listJson = getHistoryFromFile();
         if (TextUtils.isEmpty(listJson)) {
             LogUtil.e(TAG, "没有获取到有效内容");
             return null;
         }
-        List<CalendarScheme> list = gson.fromJson(listJson, new TypeToken<List<CalendarScheme>>() {}.getType());
-        saveData(list);
-        for (CalendarScheme scheme : list) {
-            map.put(getSchemeCalendar(scheme).toString(), getSchemeCalendar(scheme));
-        }
-        return map;
+        return getSchemeMapByJson(listJson,true);
     }
 
     //将历史考勤数据保存成json
@@ -146,29 +203,29 @@ public class CalendarRepository {
             @Override
             public void run() {
                 List<CalendarScheme> list = getSchemeDataList();
-
-//                List<CalendarScheme> list = new ArrayList<>();
-//                for (int i = 20200604; i < 20200804; ) {
-//                    CalendarScheme data = new CalendarScheme();
-//                    data.cId = i;
-//                    data.year = 2020;
-//                    data.month = Integer.parseInt(String.valueOf(i).substring(4, 6));
-//                    data.day = Integer.parseInt(String.valueOf(i).substring(6));
-//                    data.text = "卡";
-//                    data.color = -14983648;
-//                    list.add(data);
-//                    if (data.day == 31) {
-//                        i += 70;
-//                    } else {
-//                        i++;
-//                    }
-//                }
-
                 Gson gson = new GsonBuilder().create();
                 String json = gson.toJson(list);
                 FileUtil.stringToExternalFile(json, Constants.ATTENDANCE_JSON_NAME, App.getInstance());
             }
         }.start();
+    }
+
+    private Map<String, Calendar> getSchemeMapByJson(String json, Boolean isSaveDb){
+        if (TextUtils.isEmpty(json)) {
+            LogUtil.e(TAG, "没有获取到有效内容");
+            return null;
+        }
+        Map<String, Calendar> map = new HashMap<>();
+        Gson gson = new GsonBuilder().create();
+        //泛型对象解析
+        List<CalendarScheme> list = gson.fromJson(json, new TypeToken<List<CalendarScheme>>() {}.getType());
+        if (isSaveDb){
+            saveData(list);
+        }
+        for (CalendarScheme scheme : list) {
+            map.put(getSchemeCalendar(scheme).toString(), getSchemeCalendar(scheme));
+        }
+        return map;
     }
 
     // 从json中读取历史考勤数据

@@ -33,7 +33,16 @@ public class LogUtil {
 
     public static void d(String tag,String msg){
         if (level <= DEBUG){
-            Log.d(tag, msg);
+            while (msg.length() > 0){
+                if (msg.length() > 1000){
+                    String str = msg.substring(0,1000);
+                    Log.d(tag, str);
+                    msg = msg.substring(1000);
+                }else {
+                    Log.d(tag, msg);
+                    msg = "";
+                }
+            }
         }
     }
 

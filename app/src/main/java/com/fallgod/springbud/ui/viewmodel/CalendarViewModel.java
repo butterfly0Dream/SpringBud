@@ -7,6 +7,7 @@ import com.fallgod.springbud.Constants;
 import com.fallgod.springbud.R;
 import com.fallgod.springbud.data.bean.CalendarScheme;
 import com.fallgod.springbud.data.repository.CalendarRepository;
+import com.fallgod.springbud.data.sp.SharedPrefHelper;
 import com.haibin.calendarview.Calendar;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class CalendarViewModel extends ViewModel {
 
     private CalendarRepository repository = new CalendarRepository();
 
-    private MutableLiveData<String> historyData = new MutableLiveData<>();
+    private int mCid;
 
     //当前日期
     public final MutableLiveData<String> textMonthDay = new MutableLiveData<>();
@@ -50,13 +51,14 @@ public class CalendarViewModel extends ViewModel {
     }
 
     public void refreshSchemeData(){
-        new Thread() {
-            @Override
-            public void run() {
-                schemeData.postValue(repository.getSchemeData());
-            }
-        }.start();
-        repository.getRemoteData(schemeData);
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                schemeData.postValue(repository.getSchemeData());
+//            }
+//        }.start();
+//        repository.getRemoteData(schemeData);
+        repository.refreshData(schemeData);
     }
 
     public void saveData(){
@@ -146,6 +148,11 @@ public class CalendarViewModel extends ViewModel {
             //更新到数据库
             repository.update(calendarScheme);
         }
+        //更新数据version
+        if (calendarScheme.text.equals("上") || calendarScheme.text.equals("下") ){            SharedPrefHelper.getInstance(App.getInstance()).setAttendanceVersion(mCid * 10);
+        }else {
+            SharedPrefHelper.getInstance(App.getInstance()).setAttendanceVersion(mCid * 10 + 1);
+        }
     }
 
     private CalendarScheme getSchemeToday(int color,String text){
@@ -158,10 +165,10 @@ public class CalendarViewModel extends ViewModel {
         if (day.length() == 1){
             day = "0" + day;
         }
-        int cId = Integer.parseInt(year + month + day);
+        mCid = Integer.parseInt(year + month + day);
         int m = Integer.parseInt(textMonth.getValue());
         int d = Integer.parseInt(textDay.getValue());
-        return getScheme(cId, textYear.getValue(), m, d, color, text);
+        return getScheme(mCid, textYear.getValue(), m, d, color, text);
     }
 
     private CalendarScheme getScheme(int cId, int year, int month, int day, int color, String text){
