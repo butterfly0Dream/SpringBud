@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ import okhttp3.ResponseBody;
 public class CalendarRepository {
     private static final String TAG = "CalendarRepository";
 
+    //----------------数据库增删改查 start------------------------------------------
     public void saveData(List<CalendarScheme> list) {
         LogUtil.d(TAG, "save data");
         new Thread() {
@@ -58,6 +60,18 @@ public class CalendarRepository {
                 AppDatabase.getInstance().calendarSchemeDao().insertAll(calendarScheme);
             }
         }.start();
+    }
+
+    public CalendarScheme getLatestSchemeData() {
+        CalendarScheme calendarScheme = AppDatabase.getInstance().calendarSchemeDao().getLatest();
+        LogUtil.d(TAG, "latest calendarScheme::" + calendarScheme.toString());
+        return calendarScheme;
+    }
+
+    public List<CalendarScheme> getSchemeDataList() {
+        List<CalendarScheme> list = AppDatabase.getInstance().calendarSchemeDao().getAll();
+        LogUtil.d(TAG, "list size:" + list.size());
+        return list;
     }
 
     public void update(CalendarScheme... calendarScheme) {
@@ -79,6 +93,7 @@ public class CalendarRepository {
             }
         }.start();
     }
+    //----------------数据库增删改查 end------------------------------------------
 
     /**
      * 更新数据
@@ -86,6 +101,8 @@ public class CalendarRepository {
      * 2.一致则读取本地json文件更新
      */
     public void refreshData(MutableLiveData<Map<String, Calendar>> liveData){
+        liveData.postValue(getSchemeData());//展示数据库的缓存文件
+
         getRemoteData(liveData);
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.calenderFileInfo(new Callback() {
@@ -129,8 +146,9 @@ public class CalendarRepository {
                         JSONObject jsonObject = new JSONObject(json);
                         int version = jsonObject.getInt("version");
                         int s = SharedPrefHelper.getInstance(App.getInstance()).getAttendanceVersion();
+                        LogUtil.d(TAG,"version:" + version + "--" +s);
                         if (s > version){
-                            liveData.postValue(getSchemeData());//展示数据库的缓存文件
+//                            liveData.postValue(getSchemeData());//展示数据库的缓存文件
                             List<CalendarScheme> list = getSchemeDataList();
                             Gson gson = new GsonBuilder().create();
                             String dataList = gson.toJson(list);
@@ -139,7 +157,6 @@ public class CalendarRepository {
                             String message = "更新至版本" + s;
                             pushData(message, content, sha);
                         }else if (s == version){
-                            liveData.postValue(getSchemeData());//展示数据库的缓存文件
                         }else {
                             String data = jsonObject.getString("data");
                             SharedPrefHelper.getInstance(App.getInstance()).setAttendanceVersion(version);
@@ -171,12 +188,6 @@ public class CalendarRepository {
                 }
             }
         });
-    }
-
-    public List<CalendarScheme> getSchemeDataList() {
-        List<CalendarScheme> list = AppDatabase.getInstance().calendarSchemeDao().getAll();
-        LogUtil.d(TAG, "list size:" + list.size());
-        return list;
     }
 
     private Map<String, Calendar> getSchemeData() {
@@ -219,9 +230,20 @@ public class CalendarRepository {
         Gson gson = new GsonBuilder().create();
         //泛型对象解析
         List<CalendarScheme> list = gson.fromJson(json, new TypeToken<List<CalendarScheme>>() {}.getType());
-        if (isSaveDb){
-            saveData(list);
+
+        CalendarScheme latest = getLatestSchemeData();
+        List<CalendarScheme> updateList = new ArrayList<>();
+        for (CalendarScheme calendarScheme:list){
+            if (calendarScheme.cId == latest.cId){//同日期更新
+                update(calendarScheme);
+            }else if (calendarScheme.cId > latest.cId){
+                updateList.add(calendarScheme);//新的日期插入数据
+            }
         }
+        if (isSaveDb){
+            saveData(updateList);
+        }
+
         for (CalendarScheme scheme : list) {
             map.put(getSchemeCalendar(scheme).toString(), getSchemeCalendar(scheme));
         }

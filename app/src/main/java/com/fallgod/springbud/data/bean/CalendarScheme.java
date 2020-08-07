@@ -30,4 +30,16 @@ public class CalendarScheme {
 
     @ColumnInfo(name = "text")
     public String text;
+
+    @Override
+    public String toString() {
+        return "CalendarScheme{" +
+                "cId=" + cId +
+                ", year=" + year +
+                ", month=" + month +
+                ", day=" + day +
+                ", color=" + color +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }

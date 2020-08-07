@@ -25,6 +25,9 @@ public interface CalendarSchemeDao {
     @Query("SELECT * FROM CalendarScheme WHERE cId IN (:schemeIds)")
     List<CalendarScheme> loadAllByIds(int[] schemeIds);
 
+    @Query("SELECT * FROM CalendarScheme ORDER BY cId DESC LIMIT 0,1")
+    CalendarScheme getLatest();
+
     @Insert
     void insertAll(CalendarScheme... calendarSchemes);
 
