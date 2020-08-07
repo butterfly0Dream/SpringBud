@@ -34,7 +34,6 @@ void AudioDecoder::InitSwr() {
 
     // 配置输入/输出通道类型
     av_opt_set_int(m_swr, "in_channel_layout", codecCtx->channel_layout, 0);
-
     //这里的 AUDIO_DEST_CHANNEL_LAYOUT = AV_CH_LAYOUT_STEREO, 即 立体声
     av_opt_set_int(m_swr,"out_channel_layout", AUDIO_DEST_CHANNEL_LAYOUT, 0);
 

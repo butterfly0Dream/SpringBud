@@ -178,6 +178,8 @@ void OpenSLRender::StartRender() {
     LOGI(TAG, "openSL render start playing")
 }
 
+// 因为我们在初始化播放器时，将此函数注册为了回调接口
+// 在接下来的播放过程中，OpenSL 只要播放完数据，就会自动回调 sReadPcmBufferCbFun 重新播放流程
 void OpenSLRender::sReadPcmBufferCbFun(SLAndroidSimpleBufferQueueItf bufferQueueItf, void *context) {
     OpenSLRender *player = (OpenSLRender *)context;
     player->BlockEnqueue();
@@ -204,6 +206,7 @@ void OpenSLRender::BlockEnqueue() {
 
     PcmData *pcmData = m_data_queue.front();
     if (NULL != pcmData && m_pcm_player) {
+        //将数据压入 OpenSL 队列
         SLresult result = (*m_pcm_buffer)->Enqueue(m_pcm_buffer, pcmData->pcm, (SLuint32) pcmData->size);
         if (result == SL_RESULT_SUCCESS) {
             // 只做已经使用标记，在下一帧数据压入前移除
