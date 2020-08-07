@@ -47,6 +47,7 @@ public class JsonUtil {
             result.append("\",");
         }else {
             result.append(value);
+            result.append(",");
         }
 
         if (TextUtils.isEmpty(arrayKey)){//认为rawStr是jsonObject
