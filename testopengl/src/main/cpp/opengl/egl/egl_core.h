@@ -20,7 +20,7 @@ private:
     // EGL显示窗口
     EGLDisplay m_egl_dsp = EGL_NO_DISPLAY;
 
-    // EGL上线问
+    // EGL上下文
     EGLContext m_egl_cxt = EGL_NO_CONTEXT;
 
     // EGL配置
