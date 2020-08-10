@@ -64,7 +64,9 @@ public class CalendarRepository {
 
     public CalendarScheme getLatestSchemeData() {
         CalendarScheme calendarScheme = AppDatabase.getInstance().calendarSchemeDao().getLatest();
-        LogUtil.d(TAG, "latest calendarScheme::" + calendarScheme.toString());
+        if(calendarScheme != null){
+            LogUtil.d(TAG, "latest calendarScheme::" + calendarScheme.toString());
+        }
         return calendarScheme;
     }
 
@@ -233,12 +235,16 @@ public class CalendarRepository {
 
         CalendarScheme latest = getLatestSchemeData();
         List<CalendarScheme> updateList = new ArrayList<>();
-        for (CalendarScheme calendarScheme:list){
-            if (calendarScheme.cId == latest.cId){//同日期更新
-                update(calendarScheme);
-            }else if (calendarScheme.cId > latest.cId){
-                updateList.add(calendarScheme);//新的日期插入数据
+        if (latest != null){
+            for (CalendarScheme calendarScheme:list){
+                if (calendarScheme.cId == latest.cId){//同日期更新
+                    update(calendarScheme);
+                }else if (calendarScheme.cId > latest.cId){
+                    updateList.add(calendarScheme);//新的日期插入数据
+                }
             }
+        }else {
+            updateList = list;
         }
         if (isSaveDb){
             saveData(updateList);
