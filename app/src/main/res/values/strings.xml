@@ -6,7 +6,7 @@
     <!--测试button文本-->
     <string name="btn_test">测试</string>
     <string name="btn_main_open_drawer">Open Drawer</string>
-    
+
     <!--考勤dialog按钮文本-->
     <string name="attendance_to_work">上班</string>
     <string name="attendance_off_work">下班</string>
@@ -15,4 +15,4 @@
     <string name="attendance_leave">带薪假</string>
     <string name="attendance_something_leave">事假</string>
     <string name="attendance_sick_leave">病假</string>
-    </resources>
+</resources>

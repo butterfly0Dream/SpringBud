@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.fallgod.springbud.ui.viewmodel.SettingViewModel" />
+        <variable
+            name="event"
+            type="com.fallgod.springbud.ui.activity.SettingActivity.ClickProxy" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
+        tools:context=".ui.activity.SettingActivity">
+
+        <View
+            android:id="@+id/view_title_bar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@{vm.textContent}"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/view_title_bar"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/view_title_bar"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/view_title_bar"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/view_title_bar" />-->
+
+        <ImageView
+            android:id="@+id/iv_main_open_drawer"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:onClick="@{()->event.back()}"
+            android:src="@drawable/selector_back"
+            app:layout_constraintBottom_toBottomOf="@+id/view_title_bar"
+            app:layout_constraintStart_toStartOf="@+id/view_title_bar"
+            app:layout_constraintTop_toTopOf="@+id/view_title_bar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

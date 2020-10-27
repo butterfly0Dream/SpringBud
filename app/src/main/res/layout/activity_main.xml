@@ -29,9 +29,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.activity.MainActivity"
             android:background="@color/colorPrimary"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            tools:context=".ui.activity.MainActivity">
 
             <View
                 android:id="@+id/view_title_bar"
@@ -68,9 +68,9 @@
                 android:name="com.fallgod.springbud.ui.fragement.CalendarFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_title_bar"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_title_bar" />
 
             <fragment
                 android:id="@+id/fragment_weather"
@@ -83,12 +83,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:fitsSystemWindows="true"
             app:headerLayout="@layout/navi_view_header"
-            app:menu="@menu/navi_view_menu"
-            android:fitsSystemWindows="true" />
+            app:menu="@menu/navi_view_menu" />
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

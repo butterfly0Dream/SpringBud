@@ -1,16 +1,13 @@
 package com.fallgod.springbud.ui.base;
 
 import android.content.pm.ApplicationInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgod.springbud.App;
 import com.fallgod.springbud.BR;
-import com.fallgod.springbud.R;
 import com.fallgod.springbud.ui.viewmodel.ShareViewModel;
 
 import androidx.annotation.Nullable;
@@ -67,16 +64,16 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return
      */
     protected ViewDataBinding getBinding() {
-        if (isDebug() && mBinding != null) {
-            if (mTvStrictModeTip == null) {
-                mTvStrictModeTip = new TextView(getApplicationContext());
-                mTvStrictModeTip.setAlpha(0.5f);
-                mTvStrictModeTip.setTextSize(16);
-                mTvStrictModeTip.setBackgroundColor(Color.WHITE);
-                mTvStrictModeTip.setText(R.string.debug_activity_databinding_warning);
-                ((ViewGroup) mBinding.getRoot()).addView(mTvStrictModeTip);
-            }
-        }
+//        if (isDebug() && mBinding != null) {
+//            if (mTvStrictModeTip == null) {
+//                mTvStrictModeTip = new TextView(getApplicationContext());
+//                mTvStrictModeTip.setAlpha(0.5f);
+//                mTvStrictModeTip.setTextSize(16);
+//                mTvStrictModeTip.setBackgroundColor(Color.WHITE);
+//                mTvStrictModeTip.setText(R.string.debug_activity_databinding_warning);
+//                ((ViewGroup) mBinding.getRoot()).addView(mTvStrictModeTip);
+//            }
+//        }
         return mBinding;
     }
 
