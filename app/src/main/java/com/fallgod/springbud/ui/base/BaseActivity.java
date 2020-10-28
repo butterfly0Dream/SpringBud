@@ -1,6 +1,7 @@
 package com.fallgod.springbud.ui.base;
 
 import android.content.pm.ApplicationInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
@@ -30,6 +31,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ViewDataBinding mBinding;
     private TextView mTvStrictModeTip;
 
+    public int statusBarColor;
+
+    protected abstract void setStatusBarColor();
+
     protected abstract void initViewModel();
 
     protected abstract DataBindingConfig getDataBindingConfig();
@@ -55,7 +60,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        //设置沉浸式状态栏
+        setStatusBarColor();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(statusBarColor);
+        }
+    }
 
     /**
      * TODO tip: 警惕使用。非必要情况下，尽可能不在子类中拿到 binding 实例乃至获取 view 实例。使用即埋下隐患。

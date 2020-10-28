@@ -1,6 +1,7 @@
 package com.fallgod.springbud.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -48,6 +49,15 @@ public class MainActivity extends BaseActivity {
         //处理打开、关闭drawer事件
         getShareViewModel().openOrCloseDrawer.observe(this, aBoolean ->
                 mMainViewModel.openDrawer.setValue(aBoolean));
+    }
+
+    @Override
+    protected void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            statusBarColor = getColor(R.color.colorPrimary);
+        }else {
+            statusBarColor = getResources().getColor(R.color.colorPrimary);
+        }
     }
 
     @Override
