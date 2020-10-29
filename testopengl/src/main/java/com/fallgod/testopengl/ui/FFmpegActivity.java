@@ -1,7 +1,14 @@
 package com.fallgod.testopengl.ui;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -19,7 +26,8 @@ public class FFmpegActivity extends AppCompatActivity {
     private TextView mTv;
     private SurfaceView mSfv;
 
-    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test.mp4";
+//    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/test.mp4";
+    private String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/HDiCarCam/HDiCar_Movie/video.avi";
     private int player;
 
     @Override
@@ -36,6 +44,8 @@ public class FFmpegActivity extends AppCompatActivity {
                 LogUtil.d(TAG,"getState(player):"+getState(player));
             }
         });
+
+        path = getPath(this);
 
         initSfv();
 
@@ -68,6 +78,39 @@ public class FFmpegActivity extends AppCompatActivity {
         }
     }
 
+
+
+    private String getPath(Context context) {
+        String path = "";
+
+        ContentResolver contentResolver = context.getContentResolver();
+        Cursor cursor;
+        // 获取指定目录的所有文件
+        cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                null ,null , null, null);
+        // 遍历文件信息
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DISPLAY_NAME));
+            Log.d(TAG, "getPath: "+name);
+            if (name.equals("video.avi")) {
+                long date = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED));
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID));
+                Uri uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);
+                String realPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.RELATIVE_PATH));
+                String str = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA));
+                Log.d(TAG, "getLocalVideoBeans: name:" + name + "  id:" + id + "  uri:" + uri + "  date:" + date);
+                Log.d(TAG, "getLocalVideoBeans: realPath:" + realPath +"  "+uri.getPath() + "  "+str);
+//                path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + realPath + name;
+                path = str;
+                Log.d(TAG, " final getPath: "+path);
+            }
+        }
+        // 使用完后关闭cursor
+        cursor.close();
+
+        return path;
+    }
+
     private void initSfv(){
         mSfv.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -90,7 +133,7 @@ public class FFmpegActivity extends AppCompatActivity {
         });
     }
 
-    //----------------------------JNI相关接口--------------------------------------------
+    //me
 
     public native String ffmpegInfo();
 
