@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="com.fallgod.springbud.ui.viewmodel.SettingViewModel" />
+
         <variable
             name="event"
             type="com.fallgod.springbud.ui.activity.SettingActivity.ClickProxy" />
@@ -27,16 +29,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/tv_title"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@{vm.textContent}"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/view_title_bar"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/view_title_bar"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/view_title_bar"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/view_title_bar" />-->
-
         <ImageView
             android:id="@+id/iv_main_open_drawer"
             android:layout_width="30dp"
@@ -48,6 +40,39 @@
             app:layout_constraintBottom_toBottomOf="@+id/view_title_bar"
             app:layout_constraintStart_toStartOf="@+id/view_title_bar"
             app:layout_constraintTop_toTopOf="@+id/view_title_bar" />
+
+        <Button
+            android:id="@id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> event.test1()}"
+            android:text="111"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_title_bar" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->event.test2()}"
+            android:text="222"
+            app:layout_constraintStart_toEndOf="@+id/btn1"
+            app:layout_constraintTop_toBottomOf="@+id/view_title_bar" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->event.test3()}"
+            android:text="222"
+            app:layout_constraintStart_toEndOf="@+id/btn2"
+            app:layout_constraintTop_toBottomOf="@+id/view_title_bar" />
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
