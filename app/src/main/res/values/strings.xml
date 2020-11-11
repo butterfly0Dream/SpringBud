@@ -15,4 +15,11 @@
     <string name="attendance_leave">带薪假</string>
     <string name="attendance_something_leave">事假</string>
     <string name="attendance_sick_leave">病假</string>
+
+    <!--侧滑navigationView的item文本-->
+    <string name="menu_item_home">Home</string>
+    <string name="menu_item_setting">Setting</string>
+    <string name="menu_item_other">Other</string>
+    <string name="menu_item_share">Share</string>
+    <string name="menu_item_about">About</string>
 </resources>

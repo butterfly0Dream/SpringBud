@@ -8,6 +8,7 @@ import android.view.View;
 import com.fallgod.springbud.BR;
 import com.fallgod.springbud.R;
 import com.fallgod.springbud.databinding.ActivityMainBinding;
+import com.fallgod.springbud.databinding.NaviViewHeaderBinding;
 import com.fallgod.springbud.ui.base.BaseActivity;
 import com.fallgod.springbud.ui.base.DataBindingConfig;
 import com.fallgod.springbud.ui.viewmodel.MainViewModel;
@@ -40,11 +41,14 @@ public class MainActivity extends BaseActivity {
                         case R.id.item_about:
                             LogUtil.d(TAG," click item about");
                             break;
-
                     }
                     return true;
                 }
         );
+        // 绑定navigationView的header的dataBinding
+        NaviViewHeaderBinding  headerBinding = NaviViewHeaderBinding.bind(binding().navView.getHeaderView(0));
+        headerBinding.setVm(mMainViewModel);
+        headerBinding.setEvent(new ClickProxy());
 
         //处理打开、关闭drawer事件
         getShareViewModel().openOrCloseDrawer.observe(this, aBoolean ->
@@ -72,6 +76,9 @@ public class MainActivity extends BaseActivity {
                 .addBindingParams(BR.listener, new EventHandler());
     }
 
+    private ActivityMainBinding binding(){
+        return (ActivityMainBinding) getBinding();
+    }
 
     public class ClickProxy {
         public void changeText() {
